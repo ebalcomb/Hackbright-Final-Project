@@ -1,0 +1,23 @@
+pip install skaffold: looks at models and auto-generates views. It will let you know if the models you created look okay. NOT PERMANENT.
+
+
+FLASK-TEMPLATE-IS PERMANENT. Clone and modify from scratch.
+
+model is well defined: has classes, relationshps, methods. You would put instance methods on your model. Dont put too much stuff on the model if you can avoid it. 
+
+has all the files you need to start, html to start from, bootstrap in there, j-query in there. 
+
+template for a blog, has bootstrap, master template, login function is written, form validation, markdown is enabled
+
+login manager: manipulate session without messing with it, variable is "current user" which checks for a logged in user, then extracts their info from the database.
+
+login required: decorator that requires them to be logged in to see certain views
+
+current_user variable: always the user that is logged in. 
+
+password encryption is set up for you, and authentication
+
+FLASK WTF: forms:
+mechanism for requiring fields
+
+forms.py: has definition of a form. Requires title and body. validators make sure things are in the right format (example: emails must be real email addresses)
