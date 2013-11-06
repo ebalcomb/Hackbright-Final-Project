@@ -11,6 +11,9 @@ class Location(object):
         self.name = json_obj['location_name']
         self.lat = float(json_obj['location_lat'])
         self.lon = float(json_obj['location_lon'])
+        self.distance = float(json_obj['distance'])
+        self.location_type = json_obj['location_type']
+
 
 class Elevator(object):
     def __init__(self, json_obj):
@@ -31,6 +34,26 @@ class NextTrain(object):
 
 class Route(object):
     def __init__(self, json_obj):
+        self.route_id = json_obj['route_id']
+        self.route_name = json_obj['route_name']
+        self.current_message = json_obj['current_message']
+        self.advisory_message = json_obj['advisory_message']
+        self.detour_message = json_obj['detour_message']
+        self.detour_start_location = json_obj['detour_start_location']
+        self.detour_start_date_time = json_obj['detour_start_date_time']
+        self.detour_end_date_time = json_obj['detour_end_date_time']
+        self.detour_reason = json_obj['detour_reason']
+        self.last_updated = json_obj['last_updated']
+
+class BusLocation(object):
+    def __init__(self, json_obj):
+        self.lat = json_obj['self']
+        self.lng = json_obj['lng']
+        self.label = json_obj['label']
+        self.VehicleID = json_obj['VehicleID']
+        self.Direction = json_obj['Direction']
+        self.destination = json_obj['destination']
+        self.Offset = json_obj['Offset']
 
 
 
@@ -86,7 +109,6 @@ def next_to_arrive(start_station, end_station, results):
         next = NextTrain(item)
         next_trains.append(next)
     return next_trains
-
 
 
 
