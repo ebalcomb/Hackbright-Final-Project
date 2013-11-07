@@ -1,6 +1,6 @@
 import config
-# import bcrypt
-# from datetime import datetime
+import bcrypt
+from datetime import datetime
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, ForeignKey
@@ -10,13 +10,15 @@ from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 
 #from flask.ext.login import UserMixin
 
-engine = create_engine(config.DB_URI, echo=True) 
+
+engine = create_engine("sqlite:///septa.db", echo=True)
 session = scoped_session(sessionmaker(bind=engine,
                          autocommit = False,
                          autoflush = False))
 
 Base = declarative_base()
 Base.query = session.query_property()
+
 
 ################################################
 
@@ -29,16 +31,16 @@ Base.query = session.query_property()
 #     password = Column(String(64), nullable=False)
 #     salt = Column(String(64), nullable=False)
 
-#     posts = relationship("Post", uselist=True)
+    # posts = relationship("Post", uselist=True)
 
-#     def set_password(self, password):
-#         self.salt = bcrypt.gensalt()
-#         password = password.encode("utf-8")
-#         self.password = bcrypt.hashpw(password, self.salt)
+    # def set_password(self, password):
+    #     self.salt = bcrypt.gensalt()
+    #     password = password.encode("utf-8")
+    #     self.password = bcrypt.hashpw(password, self.salt)
 
-#     def authenticate(self, password):
-#         password = password.encode("utf-8")
-#         return bcrypt.hashpw(password, self.salt.encode("utf-8")) == self.password
+    # def authenticate(self, password):
+    #     password = password.encode("utf-8")
+    #     return bcrypt.hashpw(password, self.salt.encode("utf-8")) == self.password
 
 # class Post(Base):
 #     __tablename__ = "posts"
@@ -81,7 +83,8 @@ class BusStops(Base):
 
 class BusStopTimes(Base):
     __tablename__ = "bus_stop_times"
-    trip_id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    trip_id = Column(Integer, nullable=False)
     arrival_time = Column(Integer, nullable=False)
     departure_time = Column(Integer, nullable=False)
     stop_id = Column(Integer, nullable=False)
@@ -92,7 +95,8 @@ class BusStopTimes(Base):
 
 class BusTrips(Base):
     __tablename__ = "bus_trips"
-    route_id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    route_id = Column(Integer, nullable=False)
     service_id = Column(Integer, nullable=False)
     trip_id = Column(Integer, nullable=False)
     trip_headsign = Column(String(64), nullable=False)
@@ -119,7 +123,7 @@ class BusAgency(Base):
     agency_id = Column(Integer, primary_key=True)
     agency_name = Column(String(64), nullable=False)
     agency_url = Column(String(64), nullable=False)
-    angency_timezone = Column(String(64), nullable=False)
+    agency_timezone = Column(String(64), nullable=False)
     agency_lang = Column(String(64), nullable=False)
     agency_fare_url = Column(String(64), nullable=False)
 
@@ -143,6 +147,17 @@ class BusFareRules(Base):
     fare_id = Column(Integer, nullable=False)
     origin_id = Column(Integer, nullable=False)
     destination_id = Column(Integer, nullable=False)
+
+
+
+class BusShapes(Base):
+    __tablename__ = "bus_shapes"
+    shape_id = Column(Integer, primary_key=True)
+    shape_pt_lat = Column(Float, nullable=False)
+    shape_pt_lon = Column(Float, nullable=False)
+    shape_pt_sequence = Column(Integer, nullable=True)
+
+
 
 # ##########################################
 
@@ -218,7 +233,16 @@ class RailsAgency(Base):
     agency_timezone = Column(String(64), nullable=False)
     agency_lang = Column(String(64), nullable=False)
 
-#########################################
+
+class RailsShapes(Base):
+    __tablename__ = "rails_shapes"
+    id = Column(Integer, primary_key=True)
+    shape_id = Column(Integer, nullable=False)
+    shape_pt_lat = Column(Float, nullable=False)
+    shape_pt_lon = Column(Float, nullable=False)
+    shape_pt_sequence = Column(Integer, nullable=True)
+
+##########################################
 
 def create_tables():
     Base.metadata.create_all(engine)

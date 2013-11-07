@@ -1,4 +1,3 @@
-stop_id,stop_name, stop_desc, stop_lat, stop_lon, zone_id
 90001,Cynwyd,Cynwyd Line,40.0066667,-75.2316667,2
 90002,Bala,Cynwyd Line,40.0011111,-75.2277778,2
 90003,Wynnefield Avenue,Cynwyd Line,39.99,-75.2255556,1

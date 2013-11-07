@@ -1,4 +1,3 @@
-trip_id,arrival_time,departure_time,stop_id,stop_sequence,pickup_type,drop_off_type
 AIR_402_V5,05:09:00,05:09:00,90401,1,0,0
 AIR_402_V5,05:11:00,05:11:00,90402,2,0,0
 AIR_402_V5,05:12:00,05:12:00,90403,3,0,0

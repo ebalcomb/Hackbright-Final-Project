@@ -1,4 +1,3 @@
-stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,zone_id,wheelchair_boarding
 2,Ridge Av & Lincoln Dr  ,40.014986,-75.206826,,31032,1,0
 4,Roosevelt Blvd & Broad St - FS,40.018128,-75.148887,,,1,
 5,Roosevelt Blvd & 5th St,40.023465,-75.133487,,,1,

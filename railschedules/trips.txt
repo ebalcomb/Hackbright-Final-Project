@@ -1,4 +1,3 @@
-route_id,service_id,trip_id,trip_headsign,block_id,trip_short_name,shape_id,direction_id
 AIR,S1,AIR_402_V5,Center City Philadelphia,402,402,AIRI_IB_1,0
 AIR,S2,AIR_402_V6,Center City Philadelphia,402,402,AIRI_IB_3,0
 AIR,S3,AIR_402_V7,Center City Philadelphia,402,402,AIRI_IB_3,0

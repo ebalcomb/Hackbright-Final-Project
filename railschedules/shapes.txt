@@ -1,4 +1,3 @@
-shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence
 AIRI_IB_1,39.879374,-75.239914,1
 AIRI_IB_1,39.878972,-75.239978,2
 AIRI_IB_1,39.878817,-75.239991,3

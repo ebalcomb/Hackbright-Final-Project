@@ -1,4 +1,3 @@
-route_id,route_short_name,route_long_name,route_desc,agency_id,route_type,route_color,route_text_color,route_url
 AIR,Airport Line,Airport Line,,SEPTA,2,91456C,FFFFFF,http://www.septa.org/schedules/rail/index.html
 CHE,Chestnut Hill East Line,Chestnut Hill East Line,,SEPTA,2,94763C,FFFFFF,http://www.septa.org/schedules/rail/index.html
 CHW,Chestnut Hill West Line,Chestnut Hill West Line,,SEPTA,2,00B4B2,FFFFFF,http://www.septa.org/schedules/rail/index.html

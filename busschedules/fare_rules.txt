@@ -1,4 +1,3 @@
-fare_id,origin_id,destination_id
 1,1,1
 1,1,2
 1,1,3
