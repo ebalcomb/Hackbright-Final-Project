@@ -24,7 +24,7 @@ class Elevator(object):
         self.alternate_url = json_obj['alternate_url']
 
 class NextTrain(object):
-    def __init__(self json_obj):
+    def __init__(self, json_obj):
         self.orig_train = json_obj['orig_train']
         self.orig_line = json_obj['orig_line']
         self.departure_time = json_obj['departure_time']
