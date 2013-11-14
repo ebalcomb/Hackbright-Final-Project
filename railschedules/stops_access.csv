@@ -1,0 +1,87 @@
+RAILS
+
+R1
+
+90401,Airport Terminal E F,Airport Line,39.8794444,-75.2397222,4
+90402,Airport Terminal C D,Airport Line,39.8780556,-75.24,4
+90403,Airport Terminal B,Airport Line,39.8772222,-75.2413889,4
+90404,Airport Terminal A,Airport Line,39.8761111,-75.2452778,4
+90405,Eastwick,Airport Line,39.8927778,-75.2438889,2
+90406,University City,Multiple Lines,39.9480556,-75.1902778,C
+90004,30th Street Station,All Regional Rail Lines,39.9566667,-75.1816667,C
+90408,Melrose Park,Multiple Lines,40.0594444,-75.1291667,2
+90407,Fern Rock T C,Multiple Lines,40.0405556,-75.1347222,1
+
+
+R2
+
+90412,Ardsley,Warminster Line,40.1141667,-75.1530556,3
+90413,Roslyn,Warminster Line,40.1208333,-75.1341667,3
+90417,Warminster,Warminster Line,40.1952778,-75.0891667,4
+90201,Newark,Wilmington Newark Line,39.6705556,-75.7527778,4
+90202,Churchman's Crossing,Wilmington Newark Line,39.695,-75.6725,4
+90203,Wilmington,Wilmington Newark Line,39.7372222,-75.5511111,4
+90204,Claymont,Wilmington Newark Line,39.7977778,-75.4522222,4
+
+
+R3
+
+90323,Neshaminy,West Trenton Line,40.1469444,-74.9616667,3
+90322,Trevose,West Trenton Line,40.1402778,-74.9825,3
+90321,Somerton,West Trenton Line,40.1305556,-75.0119444,3
+90320,Forest Hills,West Trenton Line,40.1277778,-75.0205556,3
+90318,Bethayres,West Trenton Line,40.1166667,-75.0683333,3
+90301,Elwyn,Media Elwyn Line,39.9075,-75.4116667,3
+90302,Media,Media Elwyn Line,39.9144444,-75.395,3
+90305,Swarthmore,Media Elwyn Line,39.9022222,-75.3508333,3
+90306,Morton-Rutledge,Media Elwyn Line,39.9077778,-75.3288889,2
+90314,49th Street,Media Elwyn Line,39.9436111,-75.2166667,1
+
+
+R5
+
+90501,Thorndale,Paoli Thorndale Line,39.9927778,-75.7636111,4
+90504,Exton,Paoli Thorndale Line,40.0191667,-75.6227778,4
+90508,Berwyn,Paoli Thorndale Line,40.0480556,-75.4422222,3
+90538,Doylestown,Lansdale Doylestown Line,40.3063889,-75.1302778,4
+90537,Delaware Valley College,Lansdale Doylestown Line,40.2972222,-75.1616667,4
+90536,New Britain,Lansdale Doylestown Line,40.2975,-75.1797222,4
+90535,Chalfont,Lansdale Doylestown Line,40.2877778,-75.2097222,4
+90534,Link Belt,Lansdale Doylestown Line,40.2738889,-75.2466667,4
+90530,Pennbrook,Lansdale Doylestown Line,40.2302778,-75.2816667,4
+90529,North Wales,Lansdale Doylestown Line,40.2141667,-75.2772222,4
+90526,Ambler,Lansdale Doylestown Line,40.1536111,-75.2247222,3
+90525,Fort Washington,Lansdale Doylestown Line,40.1358333,-75.2122222,3
+90005,Suburban Station,All Regional Rail Lines,39.9538889,-75.1677778,C
+90006,Market East,All Regional Rail Lines,39.9525,-75.1580556,C
+90007,Temple University,All Regional Rail Lines,39.9813889,-75.1494444,C
+90533,Colmar,Lansdale Doylestown Line,40.2683333,-75.2544444,4
+90531,Lansdale,Lansdale Doylestown Line,40.2427778,-75.285,4
+
+
+R6
+
+90228,Norristown,Manayunk Norristown Line,40.1202778,-75.3475,3
+90224,Spring Mill,Manayunk Norristown Line,40.0741667,-75.2861111,3
+90002,Bala,Cynwyd Line,40.0011111,-75.2277778,2
+
+R7
+
+90701,Trenton,Trenton Line,40.2177778,-74.755,NJ
+90706,Cornwells Heights,Trenton Line,40.0716667,-74.9522222,3
+
+R8
+
+90801,Chestnut Hill West,Chestnut Hill West Line,40.0763889,-75.2083333,2
+90809,Queen Lane,Chestnut Hill West Line,40.0233333,-75.1780556,1
+90813,Cheltenham,Fox Chase Line,40.0580556,-75.0927778,2
+90812,Lawndale,Fox Chase Line,40.0513889,-75.1030556,2
+90811,Olney,Fox Chase Line,40.0333333,-75.1227778,1
+90815,Fox Chase,Fox Chase Line,40.0763889,-75.0833333,2
+
+
+ORANGE
+
+90711,North Philadelphia Amtrak,Trenton Line,39.9972222,-75.155,1
+
+

@@ -91,6 +91,26 @@ def shortest_route(graph, initial_stop, goal_stop):
     route.reverse()
     return route 
 
+def route_words(paths, names, initial_stop, goal_stop):
+    graph = create_map(paths)
+    route = shortest_route(graph, initial_stop, goal_stop)
+    f = open(names)
+    r = f.readlines()
+    id_names = {}
+    for row in r:
+        row = row.strip()
+        row = row.split(",")
+        id_names[int(row[1])] = (row[2])
+    names = []
+    for stop in route:
+        names.append(id_names[stop])
+    print "to get from %s to %s take the following route:" %(names[0], names[-1])
+    for name in names:
+        print name 
+
+
+
+
 
 def dijkstra(graph, initial_stop):
     visited = {initial_stop: 0}
