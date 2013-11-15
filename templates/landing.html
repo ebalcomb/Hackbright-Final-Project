@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+         
+         <div class="hero-unit">
+         <h1>Transit App</h1>
+         <br>
+         <p>Wheelchair accessible routes via SEPTA, Philadelphia's public transit system.</p>
+         <br>
+         <p><a class="btn btn-primary btn-large" href="{{url_for("route")}}">Plan my route! &raquo;</a></p>
+         </div><!-- .hero-unit -->
+
+
+
+        
+ <div class="row">
+
+         <div class="span6">
+         <h2>About Transit App</h2>
+         <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+         <p><a class="btn" href="{{url_for("about")}}">Find out more! &raquo;</a></p>
+         </div><!-- .span4 -->
+   
+         <div class="span6">
+                 <h2>Get Involved</h2>
+         <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+         <p><a class="btn" href="{{url_for("about")}}">Find out more! &raquo;</a></p>
+         </div><!-- .span4 -->
+   
+   
+ </div><!-- .row -->
+ </div><!-- .container -->
+
+     
+ {% endblock %}

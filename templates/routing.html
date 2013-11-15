@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+
+
+{% block head %}
+<script>
+
+  $(document).ready(function() {
+  startInput = $("input#start-address")[0]
+  endInput = $("input#end-address")[0]
+
+  var autocomplete = new google.maps.places.Autocomplete(startInput);
+  var autocomplete = new google.maps.places.Autocomplete(endInput);      
+      })
+
+</script>
+{% endblock %}
+
+
+
+{% block body %}
+
+<div class="hero-unit">
+   <form class="form-horizontal" action="{{url_for("process_route") }}" method="POST">
+          <h1>Plan my route!</h1>
+      <br><br>
+  	<div class="control-group">
+    <label class="control-label" for="start">I'm starting at:</label>
+    <div class="controls">
+      <input type="text" id="start-address" name="start">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="end">I'm going to:</label>
+    <div class="controls">
+      <input type="text" id="end-address" name="end">
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary" value = "Find accessible"><i class="icon-search icon-white"></i> Find Accessible Route</button>
+    </div>
+  </div>
+</form>
+</div>
+<!-- </div> -->
+
+{% endblock %}
