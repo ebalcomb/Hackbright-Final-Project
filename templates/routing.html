@@ -6,12 +6,31 @@
 <script>
 
   $(document).ready(function() {
-  startInput = $("input#start-address")[0]
-  endInput = $("input#end-address")[0]
+    startInput = $("input#start-address")[0]
+    endInput = $("input#end-address")[0]
 
-  var autocomplete = new google.maps.places.Autocomplete(startInput);
-  var autocomplete = new google.maps.places.Autocomplete(endInput);      
-      })
+    var autocompleteStart = new google.maps.places.Autocomplete(startInput);
+    var autocompleteEnd = new google.maps.places.Autocomplete(endInput);
+    var geocoder = new google.maps.Geocoder();
+
+    console.log("sup")
+
+    $("input#start-address").keyup( function() {
+      console.log("value", startInput.value)
+
+      //this might need the value:
+      geocoder.geocode( { 'address': startInput.value }, function(results, status) {
+        console.log("STATUS", status);
+        if (status == google.maps.GeocoderStatus.OK) {
+          console.log(results);
+          console.log(status)
+        } else {
+          console.log("Geocode was not successful for the following reason: " + status);
+        }
+      });
+    //end of keyup
+    });
+  })
 
 </script>
 {% endblock %}
