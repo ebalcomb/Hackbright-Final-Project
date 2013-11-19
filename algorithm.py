@@ -91,6 +91,11 @@ def shortest_route(graph, initial_stop, goal_stop):
     route.reverse()
     return route 
 
+def find_route(initial_stop, goal_stop):
+    graph = create_map("interpaths.csv")
+    route = shortest_route(graph, initial_stop, goal_stop)
+    return route
+
 def route_words(paths, names, initial_stop, goal_stop):
     graph = create_map(paths)
     route = shortest_route(graph, initial_stop, goal_stop)

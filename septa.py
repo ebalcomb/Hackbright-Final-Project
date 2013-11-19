@@ -65,6 +65,7 @@ class BusLocation(object):
 #uses latitude, longitude, and radius of starting location
 #result is a list of objects of the "Location" class
 def get_nearby_locations(lon, lat, radius):
+    #example coords: lon: -75 lat: 40
     url = "http://www3.septa.org/hackathon/locations/get_locations.php?lon=%f&lat=%f&radius=%f"
     response = requests.get(url%(lon, lat, radius))
     data = response.json()
@@ -73,7 +74,7 @@ def get_nearby_locations(lon, lat, radius):
     for item in data:
         loc = Location(item)
         nearby_locations.append(loc)
-    return nearby_locations
+    return nearby_locations[0].location_id
 
 
 
@@ -90,7 +91,6 @@ def get_elevator_outages():
     for item in data["results"]:
         elev = Elevator(item)
         broken_elevators.append(elev)
-    for item in broken_elevators:
     return broken_elevators
 
 

@@ -1,46 +1,10 @@
 {% extends "base.html" %}
 
-
-
-{% block head %}
-<script>
-
-  $(document).ready(function() {
-    startInput = $("input#start-address")[0]
-    endInput = $("input#end-address")[0]
-
-    var autocompleteStart = new google.maps.places.Autocomplete(startInput);
-    var autocompleteEnd = new google.maps.places.Autocomplete(endInput);
-    var geocoder = new google.maps.Geocoder();
-
-    console.log("sup")
-
-    $("input#start-address").keyup( function() {
-      console.log("value", startInput.value)
-
-      //this might need the value:
-      geocoder.geocode( { 'address': startInput.value }, function(results, status) {
-        console.log("STATUS", status);
-        if (status == google.maps.GeocoderStatus.OK) {
-          console.log(results);
-          console.log(status)
-        } else {
-          console.log("Geocode was not successful for the following reason: " + status);
-        }
-      });
-    //end of keyup
-    });
-  })
-
-</script>
-{% endblock %}
-
-
-
 {% block body %}
 
 <div class="hero-unit">
-   <form class="form-horizontal" action="{{url_for("process_route") }}" method="POST">
+   <div class="form-horizontal">
+    <!--action="{{url_for("process_route") }}" method="POST"-->
           <h1>Plan my route!</h1>
       <br><br>
   	<div class="control-group">
@@ -57,11 +21,54 @@
   </div>
   <div class="control-group">
     <div class="controls">
-      <button type="submit" class="btn btn-primary" value = "Find accessible"><i class="icon-search icon-white"></i> Find Accessible Route</button>
+      <button class="btn btn-primary" value = "Find accessible" id="routeButton"><i class="icon-search icon-white" ></i> Find Accessible Route</button>
     </div>
   </div>
-</form>
+</div>
 </div>
 <!-- </div> -->
+<script>
 
+  $(document).ready(function() {
+    startInput = $("input#start-address")[0]
+    endInput = $("input#end-address")[0]
+
+    var autocompleteStart = new google.maps.places.Autocomplete(startInput);
+    var autocompleteEnd = new google.maps.places.Autocomplete(endInput);
+    var geocoder = new google.maps.Geocoder();
+
+
+    $("#routeButton").click(function() {
+      var locs = {};
+
+      geocoder.geocode( { 'address': startInput.value }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          locs["startlat"] = results[0].geometry.location.lat();
+          locs["startlng"] = results[0].geometry.location.lng();
+          saveCoords(locs)
+        } else {
+          console.log("Geocode was not successful for the following reason: " + status);
+        }
+      });
+      geocoder.geocode( { 'address': endInput.value }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          locs["endlat"] = results[0].geometry.location.lat();
+          locs["endlng"] = results[0].geometry.location.lng();
+          saveCoords(locs)
+        } 
+        else {
+          console.log("Geocode was not successful for the following reason: " + status);
+        }
+      });
+    });
+  })
+
+  function saveCoords (locs) {
+    if (locs["startlat"] && locs["endlat"]) {
+      $.post("/process_route", locs, function(dataFromServer) {
+        $(".hero-unit").append(dataFromServer);
+      })
+    }
+  }
+</script>
 {% endblock %}

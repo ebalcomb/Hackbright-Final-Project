@@ -1,6 +1,8 @@
 from flask import Flask, render_template, redirect, request, flash, session, url_for
 import model
-
+import septa
+import algorithm
+import json
 
 app = Flask(__name__)
 app.secret_key = "Dumbledore"
@@ -15,13 +17,19 @@ def index():
 def route():
     return render_template("routing.html")
 
-@app.route("/route", methods=["POST"])
+@app.route("/process_route", methods=["POST"])
 def process_route():
-    start = request.form.get("start")
-    end = request.form.get("end")
+    latlngs = request.form # IT'S REQUEST.FORM NOT ANYTHING ELSE - LIZ
+    startlat = float(latlngs["startlat"])
+    startlng = float(latlngs["startlng"])
+    endlat = float(latlngs["endlat"])
+    endlng = float(latlngs["endlng"])
+    start_stop = septa.get_nearby_locations(startlng, startlat, 5)
+    end_stop = septa.get_nearby_locations(endlng, endlat, 5)
+    shortest_route = algorithm.find_route(start_stop, end_stop)
+    return shortest_route
 
 
-    return render_template("landing.html")
 
 
 @app.route("/about")
