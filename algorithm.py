@@ -92,7 +92,7 @@ def shortest_route(graph, initial_stop, goal_stop):
     return route 
 
 def find_route(initial_stop, goal_stop):
-    graph = create_map("interpaths.csv")
+    graph = create_map("intrapaths.csv")
     route = shortest_route(graph, initial_stop, goal_stop)
     return route
 
@@ -149,7 +149,7 @@ def dijkstra(graph, initial_stop):
             if path.end_stop.id not in visited or wt < visited[path.end_stop.id]:
                 visited[path.end_stop.id] = wt
                 route[path.end_stop.id] = min_stop.id
-
+    print "ROUTE: ", route 
     return visited, route
 
 

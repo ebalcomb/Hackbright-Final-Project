@@ -32,18 +32,6 @@ class NextTrain(object):
         self.orig_delay = json_obj['orig_delay']
         self.isdirect = json_obj['isdirect']
 
-class Route(object):
-    def __init__(self, json_obj):
-        self.route_id = json_obj['route_id']
-        self.route_name = json_obj['route_name']
-        self.current_message = json_obj['current_message']
-        self.advisory_message = json_obj['advisory_message']
-        self.detour_message = json_obj['detour_message']
-        self.detour_start_location = json_obj['detour_start_location']
-        self.detour_start_date_time = json_obj['detour_start_date_time']
-        self.detour_end_date_time = json_obj['detour_end_date_time']
-        self.detour_reason = json_obj['detour_reason']
-        self.last_updated = json_obj['last_updated']
 
 class BusLocation(object):
     def __init__(self, json_obj):
@@ -55,6 +43,50 @@ class BusLocation(object):
         self.destination = json_obj['destination']
         self.Offset = json_obj['Offset']
 
+# class Route(object):
+#     def __init__(self, json_obj):
+#         self.route_id = json_obj['route_id']
+#         self.route_name = json_obj['route_name']
+#         self.current_message = json_obj['current_message']
+#         self.advisory_message = json_obj['advisory_message']
+#         self.detour_message = json_obj['detour_message']
+#         self.detour_start_location = json_obj['detour_start_location']
+#         self.detour_start_date_time = json_obj['detour_start_date_time']
+#         self.detour_end_date_time = json_obj['detour_end_date_time']
+#         self.detour_reason = json_obj['detour_reason']
+#         self.last_updated = json_obj['last_updated']
+
+class Route:
+    def __init__(self, route_id, route_name, route_type):
+        self.id = route_id
+        self.route_name = route_name
+        self.type = route_type
+
+
+class Stop:
+    def __init__(self, stop_id, stop_name):
+        self.id = stop_id
+        self.name = stop_name
+        self.paths = []
+
+
+class Path:
+    def __init__(self, start, end, distance):
+        self.start_stop = start
+        self.end_stop = end
+        self.distance = distance
+
+class Trip:
+    def __init__(self, trip_id, route_id, veh_type):
+        self.id = trip_id
+        self.route_id = route_id
+        self.veh_type = veh_type
+
+class StopTimes:
+    def __init__(self, stop_id, trip_id, stop_time):
+        self.stop_id = stop_id
+        self.trip_id = trip_id
+        self.stop_time = stop_time
 
 
 
@@ -74,8 +106,8 @@ def get_nearby_locations(lon, lat, radius):
     for item in data:
         loc = Location(item)
         nearby_locations.append(loc)
-    return nearby_locations[0].location_id
-
+    print "******************************************"
+    return nearby_locations[0].id
 
 
 

@@ -6,8 +6,9 @@ import sys
 ###CONVERT TIMES (12:00:00) INTO MINUTES OF THE DAY
 def get_minutes(time_string):
     time = time_string.split(":")
-    time = time[0]*60 + time[1]
-    return time
+    print "TIME:::::::::::", time
+    minutes = int(time[0])*60 + int(time[1])
+    return minutes
 
 ###CONVERTS MINUTES OF THE DAY INTO TIME (12:00:00)
 def get_time(minutes):
@@ -22,8 +23,55 @@ def get_time(minutes):
 
 
 
-###LOAD UP DATA TABLES:
+##################################
+# STOPS
+##################################
 
+accessible_bus_stops = []
+def load_bus_stops():
+    #stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,zone_id,wheelchair_boarding
+    f = open("busschedules/stops.txt")
+    stops = f.readlines()
+    for stop in stops:
+        stop_col = stop.split(",")
+        if stop_col[7].strip() != "0" and stop_col[7].strip() != 0:
+            new_stop = model.Stops(id=stop_col[0], stop_name=stop_col[1], stop_lat=stop_col[2], stop_lon=stop_col[3], stop_type = "bus")
+            model.session.add(new_stop)
+            accessible_bus_stops.append(int(stop_col[0]))
+    model.session.commit()
+
+
+def load_rails_stops():
+    #stop_id,stop_name, stop_desc, stop_lat, stop_lon, zone_id
+    g = open("accessiblerailsstops")
+    stops = g.readlines()
+    accessible_stop_ids = []
+    for stop in stops:
+        stop.strip()
+        accessible_stop_ids.append(int(stop))
+    f = open("railschedules/stops.txt")
+    rail_stops = f.readlines()
+    for stop in rail_stops:
+        stop = stop.split(",")
+        stop_id = stop[0].strip()
+        if int(stop_id) in accessible_stop_ids:
+            new_stop = model.Stops(id=stop[0], stop_name=stop[1], stop_lat=stop[3], stop_lon=stop[4], stop_type = "rail")
+            model.session.add(new_stop)
+    model.session.commit()
+
+
+def load_subway_stops():
+    f = open("subwayschedules/stops.csv")
+    stops = f.readlines()
+    for stop in stops:
+        stop = stop.split(",")
+        new_stop = model.Stops(id=int(stop[1]), stop_name=stop[2], stop_lat=0, stop_lon=0, stop_type = "subway")
+        model.session.add(new_stop)
+    model.session.commit()
+
+##################################
+# ROUTES
+##################################
 
 def load_bus_routes():
     #route_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url
@@ -33,26 +81,76 @@ def load_bus_routes():
     print routes
     for route in routes:
         route_col = route.split(",")
-        new_route = model.BusRoutes(route_id=route_col[0], route_short_name=route_col[1], route_long_name=route_col[2], route_type=route_col[3], route_color=route_col[4], route_text_color=route_col[5], route_url=route_col[6])
+        new_route = model.Routes(id=route_col[0], route_short_name=route_col[1], route_long_name=route_col[2], route_type="bus")
+        model.session.add(new_route)
+    model.session.commit()
+
+
+def load_rails_routes():
+    #route_id,route_short_name,route_long_name,route_desc,agency_id,route_type,route_color,route_text_color,route_url
+    f = open("railschedules/routes.txt")
+    routes = f.readlines()
+    for route in routes:
+        route_col = route.split(",")
+        new_route = model.Routes(route_short_name=route_col[1], route_long_name=route_col[2], route_type="rail")
+        model.session.add(new_route)
+    model.session.commit()
+
+def load_subway_routes():
+    f = open("subwayschedules/routes.csv")
+    routes = f.readlines()
+    for route in routes:
+        route_col = route.split(",")
+        new_route = model.Routes(route_short_name=route_col[1], route_long_name=route_col[1], route_type="subway")
         model.session.add(new_route)
     model.session.commit()
 
 
 
+##################################
+# TRIPS
+##################################
 
-def load_bus_stops():
-    #stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,zone_id,wheelchair_boarding
-    f = open("busschedules/stops.txt")
-    stops = f.readlines()
-    for stop in stops:
-        stop_col = stop.split(",")
-        new_stop = model.BusStops(stop_id=stop_col[0], stop_name=stop_col[1], stop_lat=stop_col[2], stop_lon=stop_col[3], location_type=stop_col[4], parent_station=stop_col[5], zone_id=stop_col[6], wheelchair_boarding=stop_col[7])
-        model.session.add(new_stop)
+def load_bus_trips():
+    #route_id,service_id,trip_id,trip_headsign,block_id,direction_id,shape_id
+    f = open("busschedules/trips.txt")
+    covered_routes = []
+    covered_trips = []
+    trips = f.readlines()
+    for trip in trips:
+        trip_col = trip.split(",")
+        if int(trip_col[0]) not in covered_routes:
+            new_trip = model.Trips(id=trip_col[2], trip_id=trip_col[2], route_id=trip_col[0], direction_id=trip_col[5])
+            model.session.add(new_trip)
+            covered_routes.append(int(trip_col[0]))
+            covered_trips.append(int(trip_col[2]))
     model.session.commit()
+    for trip in covered_trips:
+        print trip
 
 
+def load_rails_trips():
+    #route_id,service_id,trip_id,trip_headsign,block_id,trip_short_name,shape_id,direction_id
+    f = open("railschedules/trips.txt")
+    covered_routes = []
+    covered_trips = []
+    trips = f.readlines()
+    for trip in trips:
+        trip_col = trip.split(",")
+        if (trip_col[0]) not in covered_routes:
+            new_trip = model.Trips(trip_id=trip_col[2], route_id=trip_col[0], direction_id=trip_col[5])
+            model.session.add(new_trip)
+            covered_routes.append(trip_col[0])
+            covered_trips.append(trip_col[2])
+    model.session.commit()
+    for trip in covered_trips:
+        print trip
 
-###HUGE####
+
+##################################
+# STOP TIMES
+##################################
+
 def load_bus_stop_times():
     #trip_id,arrival_time,departure_time,stop_id,stop_sequence
     f = open("busschedules/stop_times.txt")
@@ -63,101 +161,6 @@ def load_bus_stop_times():
         departure_time = get_minutes(stop_time_col[2])
         new_stop_time = model.BusStopTimes(trip_id=stop_time_col[0], arrival_time=arrival_time, departure_time=departure_time, stop_id=stop_time_col[3], stop_sequence=stop_time_col[4])
         model.session.add(new_stop_time)
-    model.session.commit()
-
-
-
-def load_bus_trips():
-    #route_id,service_id,trip_id,trip_headsign,block_id,direction_id,shape_id
-    f = open("busschedules/trips.txt")
-    trips = f.readlines()
-    for trip in trips:
-        trip_col = trip.split(",")
-        new_trip = model.BusTrips(route_id=trip_col[0], service_id=trip_col[1], trip_id=trip_col[2], trip_headsign=trip_col[3], block_id=trip_col[4], direction_id=trip_col[5], shape_id=trip_col[6])
-        model.session.add(new_trip)
-    model.session.commit()
-
-
-def load_bus_transfers():
-    #from_stop_id,to_stop_id,transfer_type,min_transfer_time
-    f = open("busschedules/transfers.txt")
-    transfers = f.readlines()
-    for transfer in transfers:
-        transfer_col = transfer.split(",")
-        new_transfer = model.BusTransfers(from_stop_id=transfer_col[0], to_stop_id=transfer_col[1], transfer_type=transfer_col[2], min_transfer_time=transfer_col[3])
-        model.session.add(new_transfer)
-    model.session.commit()
-
-
-
-def load_bus_agency():
-    #agency_name,agency_url,agency_timezone,agency_lang,agency_fare_url
-    f = open("busschedules/agency.txt")
-    agencies = f.readlines()
-    for agency in agencies:
-        agency_col = agency.split(",")
-        new_agency = model.BusAgency(agency_name=agency_col[0], agency_url=agency_col[1], agency_timezone=agency_col[2], agency_lang=agency_col[3], agency_fare_url=agency_col[4])
-        model.session.add(new_agency)
-    model.session.commit()
-
-
-
-def load_bus_fare_attributes():
-    #fare_id,price,currency_type,payment_method,transfers,transfer_duration
-    f = open("busschedules/fare_attributes.txt")
-    fare_attributes = f.readlines()
-    for fare_attribute in fare_attributes:
-        fare_attribute_col = fare_attribute.split(",")
-        new_fare_attribute = model.BusFareAttributes(fare_id=fare_attribute_col[0], price=fare_attribute_col[1], currency_type=fare_attribute_col[2], payment_method=fare_attribute_col[3], transfers=fare_attribute_col[4], transfer_duration=fare_attribute_col[5])
-        model.session.add(new_fare_attribute)
-    model.session.commit()
-
-
-
-
-def load_bus_fare_rules():
-    #fare_id,origin_id,destination_id
-    f = open("busschedules/fare_rules.txt")
-    fare_rules = f.readlines()
-    for fare_rule in fare_rules:
-        fare_rule_col = fare_rule.split(",")
-        new_fare_rule = model.BusFareRules(fare_id=fare_rule_col[0], origin_id=fare_rule_col[1], destination_id=fare_rule_col[2])
-        model.session.add(new_fare_rule)
-    model.session.commit()
-
-
-def load_bus_shapes():
-    #shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence
-    f = open("busschedules/shapes.txt")
-    shapes = f.readlines()
-    for shape in shapes:
-        shape_col = shape.split(",")
-        new_shape = model.BusShapes(shape_id=shape_col[0], shape_pt_lat=shape_col[1], shape_pt_lon=shape_col[2], shape_pt_sequence=shape_col[3])
-        model.session.add(new_shape)
-    model.session.commit()
-
-#############################
-
-
-
-def load_rails_routes():
-    #route_id,route_short_name,route_long_name,route_desc,agency_id,route_type,route_color,route_text_color,route_url
-    f = open("railschedules/routes.txt")
-    routes = f.readlines()
-    for route in routes:
-        route_col = route.split(",")
-        new_route = model.RailsRoutes(route_id=route_col[0], route_short_name=route_col[1], route_long_name=route_col[2], route_desc=route_col[3], agency_id=route_col[4], route_type=route_col[5], route_color=route_col[6], route_text_color=route_col[7], route_url=route_col[8])
-        model.session.add(new_route)
-    model.session.commit()
-
-def load_rails_stops():
-    #stop_id,stop_name, stop_desc, stop_lat, stop_lon, zone_id
-    f = open("railschedules/stops.txt")
-    stops = f.readlines()
-    for stop in stops:
-        stop_col = stop.split(",")
-        new_stop = model.RailsStops(stop_id=stop_col[0], stop_name=stop_col[1], stop_desc=stop_col[2], stop_lat=stop_col[3], stop_lon=stop_col[4], zone_id=stop_col[5])
-        model.session.add(new_stop)
     model.session.commit()
 
 def load_rails_stop_times():
@@ -172,55 +175,40 @@ def load_rails_stop_times():
         model.session.add(new_stop_time)
     model.session.commit()
 
-def load_rails_trips():
-    #route_id,service_id,trip_id,trip_headsign,block_id,trip_short_name,shape_id,direction_id
-    f = open("railschedules/trips.txt")
-    trips = f.readlines()
-    for trip in trips:
-        trip_col = trip.split(",")
-        new_trip = model.RailsTrips(route_id=trip_col[0], service_id=trip_col[1], trip_id=trip_col[2], trip_headsign=trip_col[3], block_id=trip_col[4], trip_short_name=trip_col[5], shape_id=trip_col[6], direction_id=trip_col[7])
-        model.session.add(new_trip)
-    model.session.commit()
-
-def load_rails_transfers():
-    #from_stop_id,to_stop_id,transfer_type
-    f = open("railschedules/transfers.txt")
-    transfers = f.readlines()
-    for transfer in transfers:
-        transfer_col = transfer.split(",")
-        new_transfer = model.RailsTransfers(from_stop_id=transfer_col[0], to_stop_id=transfer_col[1], transfer_type=transfer_col[2])
-        model.session.add(new_transfer)
-    model.session.commit()
 
 
-def load_rails_agency():
-    #agency_id, agency_name, agency_url, agency_timezone, agency_lang
-    f = open("railschedules/agency.txt")
-    agencies = f.readlines()
-    for agency in agencies:
-        agency_col = agency.split(",")
-        new_agency = model.RailsAgency(agency_id=agency_col[0], agency_name=agency_col[1], agency_url=agency_col[2], agency_timezone=agency_col[3], agency_lang=agency_col[4])
-        model.session.add(new_agency)
+##################################
+# PATHS
+##################################
+
+def load_bus_paths():
+    f = open("busschedules/interesting_times.txt")
+    stop_times = f.readlines()
+    for i in range(len(stop_times)-1):
+        if stop_times[i][0] == stop_times[i+1][0]:
+            print "stop time[i]: ", stop_times[i]
+            start_stop = stop_times[i][3]
+            end_stop = stop_times[i+1][3]
+            start_time = stop_times[i+1][1]
+            end_time = stop_times[i][1]
+            print "START TIME: ", start_time
+            print "END TIME: ", end_time
+            cost = get_minutes(stop_times[i+1][1]) - get_minutes(stop_times[i][1])
+            new_path = model.Paths(start_stop=int(start_stop), end_stop=int(end_stop), cost=int(cost))
+            model.session.add(new_path)
     model.session.commit()
 
 
 
-def load_rails_shapes():
-    #shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence
-    f = open("railschedules/shapes.txt")
-    shapes = f.readlines()
-    for shape in shapes:
-        shape_col = shape.split(",")
-        new_shape = model.RailsShapes(shape_id=shape_col[0], shape_pt_lat=shape_col[1], shape_pt_lon=shape_col[2], shape_pt_sequence=shape_col[3])
-        model.session.add(new_shape)
-    model.session.commit()
 
 
-# def main(session):
-#     pass
+def load_rails_paths():
+    pass
 
 
-# if __name__ == "__main__":
-#     main(s)
+
+def load_subway_paths():
+    pass 
+
 
 
