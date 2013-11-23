@@ -54,7 +54,7 @@ class StopTimes(Base):
     __tablename__ = "stop_times"
     id = Column(Integer, primary_key=True)
     trip_id = Column(Integer, ForeignKey('trips.id'), nullable=False)
-    arrival_time = Column(Integer, nullable=False)
+    arrival_time = Column(String(64), nullable=False)
     stop_id = Column(Integer, ForeignKey('stops.id'), nullable=False)
 
     #stop = relationship("Stops", backref=backref("stop_times", order_by=id))
@@ -74,6 +74,21 @@ class Trips(Base):
 
 def create_tables():
     Base.metadata.create_all(engine)
+
+
+##########################################
+
+#check the accessbility of stops found within the radius around the starting lat/long. If a stop is accessible, return that stops details. If it gets through the whole list and no stops are accessible, return False. 
+def access_check(stop_list):
+        for stop in stop_list:
+            stop = int(stop)
+            stop_access = session.query(Paths).filter_by(start_stop=stop).all()
+            if stop_access:
+                print "WINNER: ", stop
+                return stop
+        return False
+
+
 
 
 if __name__ == "__main__":

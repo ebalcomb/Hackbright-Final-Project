@@ -54,19 +54,19 @@ def create_map(csv):
     paths = []
     for row in rows:
 
-        if row[0] not in stops:
-            start = Stop(row[0])
+        if row[1] not in stops:
+            start = Stop(row[1])
             stops[start.id] = start
         else:
-            start = stops[row[0]]
+            start = stops[row[1]]
 
-        if row[1] not in stops:
-            end = Stop(row[1])
+        if row[2] not in stops:
+            end = Stop(row[2])
             stops[end.id] = end
         else:
-            end = stops[row[1]]
+            end = stops[row[2]]
 
-        distance = row[2]
+        distance = row[3]
 
         path = Path(start, end, distance)
         start.paths.append(path)
@@ -92,7 +92,7 @@ def shortest_route(graph, initial_stop, goal_stop):
     return route 
 
 def find_route(initial_stop, goal_stop):
-    graph = create_map("intrapaths.csv")
+    graph = create_map("dbpaths.csv")
     route = shortest_route(graph, initial_stop, goal_stop)
     return route
 
@@ -149,7 +149,7 @@ def dijkstra(graph, initial_stop):
             if path.end_stop.id not in visited or wt < visited[path.end_stop.id]:
                 visited[path.end_stop.id] = wt
                 route[path.end_stop.id] = min_stop.id
-    print "ROUTE: ", route 
+
     return visited, route
 
 

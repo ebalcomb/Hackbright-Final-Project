@@ -1,4 +1,5 @@
 import requests
+import model
 
 
 ## THIS FILE FUNCTIONS AS A PYTHON API FOR SEPTA ##
@@ -104,10 +105,10 @@ def get_nearby_locations(lon, lat, radius):
     nearby_locations = []
 
     for item in data:
-        loc = Location(item)
-        nearby_locations.append(loc)
-    print "******************************************"
-    return nearby_locations[0].id
+        nearby_locations.append(item["location_id"])
+    
+    closest_stop = model.access_check(nearby_locations)
+    return closest_stop
 
 
 

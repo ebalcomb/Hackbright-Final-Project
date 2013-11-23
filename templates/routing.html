@@ -24,6 +24,9 @@
       <button class="btn btn-primary" value = "Find accessible" id="routeButton"><i class="icon-search icon-white" ></i> Find Accessible Route</button>
     </div>
   </div>
+  <img src="static/css/30.GIF" style="display:none" id="spinner">
+  <div id="Results">
+  </div>
 </div>
 </div>
 <!-- </div> -->
@@ -40,7 +43,8 @@
 
     $("#routeButton").click(function() {
       var locs = {};
-
+      $("#Results").empty();
+      $("#spinner").show();
       geocoder.geocode( { 'address': startInput.value }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           locs["startlat"] = results[0].geometry.location.lat();
@@ -66,7 +70,8 @@
   function saveCoords (locs) {
     if (locs["startlat"] && locs["endlat"]) {
       $.post("/process_route", locs, function(dataFromServer) {
-        $(".hero-unit").append(dataFromServer);
+        $("#spinner").hide()
+        $("#Results").append(dataFromServer);
       })
     }
   }

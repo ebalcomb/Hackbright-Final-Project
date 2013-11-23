@@ -24,11 +24,22 @@ def process_route():
     startlng = float(latlngs["startlng"])
     endlat = float(latlngs["endlat"])
     endlng = float(latlngs["endlng"])
-    #start_stop = septa.get_nearby_locations(startlng, startlat, 5)
-    #end_stop = septa.get_nearby_locations(endlng, endlat, 5)
-    #shortest_route = algorithm.find_route(start_stop, end_stop)
-    #return shortest_route
-    return "ROUTE WILL APPEAR HERE! \n1. blah blah blah\n2. blah blah blah\n3. blah blah blah"
+    start_stop = int(septa.get_nearby_locations(startlng, startlat, 5))
+    end_stop = int(septa.get_nearby_locations(endlng, endlat, 5))
+
+    print "********************** START: ", start_stop
+    print "********************** END:   ", end_stop
+    if start_stop:
+        if end_stop:
+            shortest_route = algorithm.find_route(start_stop, end_stop)
+            route_string = str(shortest_route).strip('[]')
+            return route_string
+
+        else:
+            return "OH NO! Your ending location is over 5 miles away from the nearest accessible stop."
+    else:
+        return "OH NO! your starting location is over 5 miles away from the nearest accessible stop."
+
 
 
 

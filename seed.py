@@ -6,7 +6,6 @@ import sys
 ###CONVERT TIMES (12:00:00) INTO MINUTES OF THE DAY
 def get_minutes(time_string):
     time = time_string.split(":")
-    print "TIME:::::::::::", time
     minutes = int(time[0])*60 + int(time[1])
     return minutes
 
@@ -39,11 +38,12 @@ def load_bus_stops():
             model.session.add(new_stop)
             accessible_bus_stops.append(int(stop_col[0]))
     model.session.commit()
+    return accessible_bus_stops
 
 
 def load_rails_stops():
     #stop_id,stop_name, stop_desc, stop_lat, stop_lon, zone_id
-    g = open("accessiblerailsstops")
+    g = open("railschedules/accessiblerailsstops")
     stops = g.readlines()
     accessible_stop_ids = []
     for stop in stops:
@@ -63,10 +63,12 @@ def load_rails_stops():
 def load_subway_stops():
     f = open("subwayschedules/stops.csv")
     stops = f.readlines()
+    accessible_bus_stops = load_bus_stops()
     for stop in stops:
         stop = stop.split(",")
-        new_stop = model.Stops(id=int(stop[1]), stop_name=stop[2], stop_lat=0, stop_lon=0, stop_type = "subway")
-        model.session.add(new_stop)
+        if int(stop[1]) not in accessible_bus_stops:
+            new_stop = model.Stops(id=int(stop[1]), stop_name=stop[2], stop_lat=0, stop_lon=0, stop_type = "subway")
+            model.session.add(new_stop)
     model.session.commit()
 
 ##################################
@@ -76,9 +78,7 @@ def load_subway_stops():
 def load_bus_routes():
     #route_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url
     f = open("busschedules/routes.txt")
-    print f
     routes = f.readlines()
-    print routes
     for route in routes:
         route_col = route.split(",")
         new_route = model.Routes(id=route_col[0], route_short_name=route_col[1], route_long_name=route_col[2], route_type="bus")
@@ -158,8 +158,7 @@ def load_bus_stop_times():
     for stop_time in stop_times:
         stop_time_col = stop_time.split(",")
         arrival_time = get_minutes(stop_time_col[1])
-        departure_time = get_minutes(stop_time_col[2])
-        new_stop_time = model.BusStopTimes(trip_id=stop_time_col[0], arrival_time=arrival_time, departure_time=departure_time, stop_id=stop_time_col[3], stop_sequence=stop_time_col[4])
+        new_stop_time = model.StopTimes(trip_id=stop_time_col[0], arrival_time=stop_time_col[1], stop_id=stop_time_col[3])
         model.session.add(new_stop_time)
     model.session.commit()
 
@@ -170,8 +169,7 @@ def load_rails_stop_times():
     for stop_time in stop_times:
         stop_time_col = stop_time.split(",")
         arrival_time = get_minutes(stop_time_col[1])
-        departure_time = get_minutes(stop_time_col[2])
-        new_stop_time = model.RailsStopTimes(trip_id=stop_time_col[0], arrival_time=arrival_time, departure_time=departure_time, stop_id=stop_time_col[3], stop_sequence=stop_time_col[4], pickup_type=stop_time_col[5], drop_off_type=stop_time_col[6])
+        new_stop_time = model.StopTimes(trip_id=stop_time_col[0], arrival_time=stop_time_col[1], stop_id=stop_time_col[3])
         model.session.add(new_stop_time)
     model.session.commit()
 
@@ -185,16 +183,17 @@ def load_bus_paths():
     f = open("busschedules/interesting_times.txt")
     stop_times = f.readlines()
     for i in range(len(stop_times)-1):
-        if stop_times[i][0] == stop_times[i+1][0]:
-            print "stop time[i]: ", stop_times[i]
-            start_stop = stop_times[i][3]
-            end_stop = stop_times[i+1][3]
-            start_time = stop_times[i+1][1]
-            end_time = stop_times[i][1]
-            print "START TIME: ", start_time
-            print "END TIME: ", end_time
-            cost = get_minutes(stop_times[i+1][1]) - get_minutes(stop_times[i][1])
-            new_path = model.Paths(start_stop=int(start_stop), end_stop=int(end_stop), cost=int(cost))
+        stop_col1 = stop_times[i].split(",")
+        stop_col2 = stop_times[i+1].split(",")
+        if stop_col1[0] == stop_col2[0]:
+            start_stop = stop_col1[3]
+            end_stop = stop_col2[3]
+            #start_time = stop_times[i+1][1]
+            #end_time = stop_times[i][1]
+            #print "START TIME: ", start_time
+            #print "END TIME: ", end_time
+            #cost = get_minutes(stop_times[i+1][1]) - get_minutes(stop_times[i][1])
+            new_path = model.Paths(start_stop=int(start_stop), end_stop=int(end_stop), cost=5)
             model.session.add(new_path)
     model.session.commit()
 
@@ -202,13 +201,37 @@ def load_bus_paths():
 
 
 
-def load_rails_paths():
-    pass
+def load_intrapaths():
+    f = open("intrapaths.csv")
+    paths = f.readlines()
+    for path in paths:
+        path = path.split(",")
+        new_path = model.Paths(start_stop=path[0], end_stop=path[1], cost=5)
+        model.session.add(new_path)
+    model.session.commit()
 
 
 
-def load_subway_paths():
-    pass 
 
+def load_interpaths():
+    f = open("interpaths.csv")
+    paths = f.readlines()
+    for path in paths:
+        path = path.split(",")
+        new_path = model.Paths(start_stop=path[0], end_stop=path[1], cost=5)
+        model.session.add(new_path)
+    model.session.commit() 
+
+def main():
+    load_rails_stops()
+    load_subway_stops()
+    load_bus_routes()
+    load_rails_routes()
+    load_subway_routes()
+    load_bus_trips()
+    load_rails_trips()
+    load_bus_stop_times()
+    load_rails_stop_times()
+    load_interpaths()
 
 
