@@ -67,6 +67,13 @@ class Trips(Base):
     trip_id = Column(Integer, ForeignKey('trips.id'), nullable=False)
     direction_id = Column(Integer, nullable=False)
 
+class ShortestRoute(Base):
+    __tablename__ = "shortest_routes"
+    id = Column(Integer, primary_key=True)
+    start_stop = Column(Integer, ForeignKey('stops.id'), nullable=False)
+    end_stop = Column(Integer, ForeignKey('stops.id'), nullable=False)
+    stops_hit = Column(String(200), nullable=False)
+
 
 
 
@@ -88,6 +95,19 @@ def access_check(stop_list):
                 return stop
         return False
 
+##########################################
+
+def get_paths():
+    paths = session.query(Paths).all()
+    return paths
+
+def get_stops():
+    stops = session.query(Stops).all()
+    return stops
+
+
+
+##########################################
 
 
 

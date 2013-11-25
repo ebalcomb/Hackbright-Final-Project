@@ -1,4 +1,5 @@
 #Goal: use Dijkstra's algorthim to find shortest leg between 2 stops
+import model
 
 class Map(object):
     def __init__(self, stops, paths):
@@ -30,10 +31,38 @@ class Path:
         self.distance = distance
 
 
-    #find cost of path based on current time
-    def cost():
-        pass
+def create_map_from_DB():
+    db_paths = model.get_paths()
+    stops = {}
+    paths = []
+    for path in db_paths:
 
+        start_stop = path.start_stop
+        end_stop = path.end_stop
+        cost = path.cost
+
+        if start_stop not in stops:
+            start = Stop(path.start_stop)
+            stops[start.id] = start
+        else:
+            start = stops[start_stop]
+
+        if end_stop not in stops:
+            end = Stop(end_stop)
+            stops[end.id] = end
+        else:
+            end = stops[end_stop]
+
+        path = Path(start, end, cost)
+        start.paths.append(path)
+
+        return_path = Path(end, start, cost)
+        end.paths.append(return_path)
+
+        paths.append(path)
+
+    new_map = Map(stops, paths)
+    return new_map
 
 
 def create_map(csv):
@@ -79,6 +108,7 @@ def create_map(csv):
     new_map = Map(stops, paths)
     return new_map
 
+my_map = create_map_from_DB()
 
 def shortest_route(graph, initial_stop, goal_stop):
     distances, routes = dijkstra(graph, initial_stop)
@@ -92,29 +122,11 @@ def shortest_route(graph, initial_stop, goal_stop):
     return route 
 
 def find_route(initial_stop, goal_stop):
-    graph = create_map("dbpaths.csv")
-    route = shortest_route(graph, initial_stop, goal_stop)
-    return route
-
-def route_words(paths, names, initial_stop, goal_stop):
-    graph = create_map(paths)
-    route = shortest_route(graph, initial_stop, goal_stop)
-    f = open(names)
-    r = f.readlines()
-    id_names = {}
-    for row in r:
-        row = row.strip()
-        row = row.split(",")
-        id_names[int(row[1])] = (row[2])
-    names = []
-    for stop in route:
-        names.append(id_names[stop])
-    print "to get from %s to %s take the following route:" %(names[0], names[-1])
-    for name in names:
-        print name 
-
-
-
+    route = shortest_route(my_map, initial_stop, goal_stop)
+    if route:
+        return route
+    else:
+        return False
 
 
 def dijkstra(graph, initial_stop):

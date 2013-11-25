@@ -1,6 +1,7 @@
 import model
 import csv
 import sys
+import algorithm
 
 
 ###CONVERT TIMES (12:00:00) INTO MINUTES OF THE DAY
@@ -198,9 +199,6 @@ def load_bus_paths():
     model.session.commit()
 
 
-
-
-
 def load_intrapaths():
     f = open("intrapaths.csv")
     paths = f.readlines()
@@ -211,8 +209,6 @@ def load_intrapaths():
     model.session.commit()
 
 
-
-
 def load_interpaths():
     f = open("interpaths.csv")
     paths = f.readlines()
@@ -220,7 +216,23 @@ def load_interpaths():
         path = path.split(",")
         new_path = model.Paths(start_stop=path[0], end_stop=path[1], cost=5)
         model.session.add(new_path)
-    model.session.commit() 
+    model.session.commit()
+
+def load_shortest_routes():
+    start_stops = model.get_stops()
+    end_stops = model.get_stops()
+
+    for start_stop in start_stops:
+        for end_stop in end_stops:
+            start = int(start_stop.id)
+            end = int(end_stop.id)
+            shortest_route = algorithm.find_route(start, end)
+            route_string = str(shortest_route).strip('[]')
+            new_shortest_route = model.ShortestRoute(start_stop=start_stop, end_stop=end_stop, stops_hit=route_string)
+            model.session.add(new_shortest_route)
+    model.session.commit()
+
+
 
 def main():
     load_rails_stops()

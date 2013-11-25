@@ -2,8 +2,10 @@
 .page-header{background-color:#e7dbaa; color:#74562d;}
 .row{background-color:#e7dbaa; color:#74562d;}
 img {width:100%}
-.sitebackground{background-image:url("phillymap.jpg"); background-size: 100%}
+body{background-image:url("phillymap.jpg"); background-size: 100%}
 .form-horizontal{background-color:#e7dbaa; color:#74562d;}
+#spinner{height:10px, width:10px;}
+
 /*#backgroundbox{background-color:#E05151;}*/
 /*#backgroundblue{background-image:url("IMG_2628.jpg");}
 #subbox{background-color:#E05151;}
