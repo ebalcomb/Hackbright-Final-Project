@@ -126,8 +126,7 @@ def load_bus_trips():
             covered_routes.append(int(trip_col[0]))
             covered_trips.append(int(trip_col[2]))
     model.session.commit()
-    for trip in covered_trips:
-        print trip
+
 
 
 def load_rails_trips():
@@ -144,8 +143,7 @@ def load_rails_trips():
             covered_routes.append(trip_col[0])
             covered_trips.append(trip_col[2])
     model.session.commit()
-    for trip in covered_trips:
-        print trip
+
 
 
 ##################################
@@ -222,17 +220,36 @@ def load_shortest_routes():
     start_stops = model.get_stops()
     end_stops = model.get_stops()
 
-    for start_stop in start_stops:
-        for end_stop in end_stops:
-            start = int(start_stop.id)
+    # for start_stop in start_stops:
+    #     for end_stop in end_stops:
+    #         start = int(start_stop.id)
+    #         end = int(end_stop.id)
+    #         print "start", start
+    #         print "end", end
+
+    #         shortest_route = algorithm.find_route(start, end)
+    #         print "shortest route", shortest_route
+    #         if shortest_route:
+    #             route_string = str(shortest_route).strip('[]')
+    #             print "route string: ", route_string
+    #             new_shortest_route = model.ShortestRoute(start_stop=start_stop.id, end_stop=end_stop.id, stops_hit=route_string)
+    #             model.session.add(new_shortest_route)
+    # model.session.commit()
+
+    start = 90004
+    for end_stop in end_stops:
+        if int(end_stop.id)>90004:
             end = int(end_stop.id)
+            print "start", start
+            print "end", end
             shortest_route = algorithm.find_route(start, end)
+            print "shortest route", shortest_route
             if shortest_route:
                 route_string = str(shortest_route).strip('[]')
-                new_shortest_route = model.ShortestRoute(start_stop=start_stop, end_stop=end_stop, stops_hit=route_string)
+                print "route string: ", route_string
+                new_shortest_route = model.ShortestRoute(start_stop=start, end_stop=end, stops_hit=route_string)
                 model.session.add(new_shortest_route)
     model.session.commit()
-
 
 
 def main():
@@ -245,6 +262,7 @@ def main():
     load_rails_trips()
     load_bus_stop_times()
     load_rails_stop_times()
-    load_interpaths()
+    load_intrapaths()
+    load_shortest_routes()
 
 

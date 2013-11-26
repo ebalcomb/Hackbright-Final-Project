@@ -31,9 +31,11 @@ def process_route():
     print "********************** END:   ", end_stop
     if start_stop:
         if end_stop:
-            shortest_route = algorithm.find_route(start_stop, end_stop)
-            route_string = str(shortest_route).strip('[]')
-            return route_string
+            shortest_route = model.get_shortest_route(start_stop, end_stop)
+            if shortest_route:
+                return "STOPS:\n", shortest_route
+            else:
+                return "OH NO! There is no accessible route between those two locations."
 
         else:
             return "OH NO! Your ending location is over 5 miles away from the nearest accessible stop."

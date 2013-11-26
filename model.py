@@ -105,6 +105,23 @@ def get_stops():
     stops = session.query(Stops).all()
     return stops
 
+def get_shortest_route(start_stop, end_stop):
+    shortest_route = session.query(ShortestRoute).filter_by(start_stop=start_stop, end_stop=end_stop).all()
+    stop_names = []
+    if shortest_route:
+        route_string = shortest_route[0].stops_hit
+        route_string = route_string.split(",")
+        for stop in route_string:
+            stop_object = session.query(Stops).filter_by(id=int(stop)).all()
+            stop_name = stop_object[0].stop_name
+            stop_names.append(stop_name)
+        return ", ".join(stop_names)
+
+    else:
+        return "It ran at least."
+        
+
+
 
 
 ##########################################
