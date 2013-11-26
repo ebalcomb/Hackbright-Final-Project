@@ -115,18 +115,18 @@ def shortest_route(graph, initial_stop, goal_stop):
     route = [goal_stop]
  
     while goal_stop != initial_stop:
-        route.append(routes[goal_stop])
-        goal_stop = routes[goal_stop]
+        if routes.get(goal_stop, False):
+            route.append(routes[goal_stop])
+            goal_stop = routes[goal_stop]
+        else:
+            return False
  
     route.reverse()
     return route 
 
 def find_route(initial_stop, goal_stop):
     route = shortest_route(my_map, initial_stop, goal_stop)
-    if route:
-        return route
-    else:
-        return False
+    return route
 
 
 def dijkstra(graph, initial_stop):

@@ -227,9 +227,10 @@ def load_shortest_routes():
             start = int(start_stop.id)
             end = int(end_stop.id)
             shortest_route = algorithm.find_route(start, end)
-            route_string = str(shortest_route).strip('[]')
-            new_shortest_route = model.ShortestRoute(start_stop=start_stop, end_stop=end_stop, stops_hit=route_string)
-            model.session.add(new_shortest_route)
+            if shortest_route:
+                route_string = str(shortest_route).strip('[]')
+                new_shortest_route = model.ShortestRoute(start_stop=start_stop, end_stop=end_stop, stops_hit=route_string)
+                model.session.add(new_shortest_route)
     model.session.commit()
 
 
