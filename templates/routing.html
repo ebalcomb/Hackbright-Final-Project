@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<div class="hero-unit">
+<div class="hero-unit" id="routing-hero">
    <div class="form-horizontal">
     <!--action="{{url_for("process_route") }}" method="POST"-->
           <h1>Plan my route!</h1>
@@ -24,7 +24,8 @@
       <button class="btn btn-primary" value = "Find accessible" id="routeButton"><i class="icon-search icon-white" ></i> Find Accessible Route</button>
     </div>
   </div>
-  <img src="static/css/30.GIF" style="display:none" id="spinner">
+  <br>
+        <img src="static/css/30.GIF" style="display:none" class= "spinner" id="spinner">
   <div id="Results">
   </div>
 </div>

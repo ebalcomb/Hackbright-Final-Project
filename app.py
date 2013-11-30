@@ -24,23 +24,33 @@ def process_route():
     startlng = float(latlngs["startlng"])
     endlat = float(latlngs["endlat"])
     endlng = float(latlngs["endlng"])
+    print "######################################"
     start_stop = int(septa.get_nearby_locations(startlng, startlat, 5))
     end_stop = int(septa.get_nearby_locations(endlng, endlat, 5))
+    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
 
+    print "start lat", startlat
+    print "start lon", startlng
+    print "end lat", endlat
+    print "end lon", endlng
     print "********************** START: ", start_stop
     print "********************** END:   ", end_stop
     if start_stop:
         if end_stop:
-            shortest_route = model.get_shortest_route(start_stop, end_stop)
-            if shortest_route:
-                return "STOPS:\n", shortest_route
+            if start_stop != end_stop:
+                shortest_route = algorithm.find_route(start_stop, end_stop)
+                if shortest_route:
+                    return shortest_route
+                else:
+                    return "OH NO! There is no accessible route between those two locations."
             else:
-                return "OH NO! There is no accessible route between those two locations."
+                return "Oops! Your start and end location are the same."
 
         else:
             return "OH NO! Your ending location is over 5 miles away from the nearest accessible stop."
     else:
         return "OH NO! your starting location is over 5 miles away from the nearest accessible stop."
+
 
 
 

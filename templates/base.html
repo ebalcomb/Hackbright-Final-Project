@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>TransitApp</title>
+        <title>PhillyWheels</title>
         <link rel="stylesheet" href="/static/css/bootstrap.min.css">
         <link rel="stylesheet" href="/static/css/font-awesome.min.css">
         <link rel="stylesheet" href="/static/css/localcss.css">
@@ -17,12 +17,12 @@
             <div class="navbar-inner">
                 <div class="container">
                     <ul class="nav">
-                        <li><a href="{{url_for("index")}}"><b><i class="fa fa-home fa fa-inverse fa-lg"></i> Home</b></a></li>
-                        <li><a href="{{url_for("route")}}"><b><i class="fa fa-wheelchair fa fa-inverse fa-lg"></i> Plan Route</b></a></li>
+                        <li><a href="{{url_for("index")}}"><i class="fa fa-home fa fa-inverse fa-lg"></i> Home</a></li>
+                        <li><a href="{{url_for("route")}}"><i class="fa fa-wheelchair fa fa-inverse fa-lg"></i> Plan Route</a></li>
 
-                        <li><a href="{{url_for("about")}}"><b><i class="fa fa-info fa-inverse fa-lg"></i> About</b></a></li>
+                        <li><a href="{{url_for("about")}}"><i class="fa fa-info fa-inverse fa-lg"></i> About</a></li>
 
-                        <li><a href="{{url_for("involved")}}"><b><i class="icon-user icon-white fa-lg"></i> Get Involved</b></a></li>
+                        <li><a href="{{url_for("involved")}}"><i class="fa fa-group fa-inverse fa-md"></i> Get Involved</a></li>
                     </ul>
                 </div>
             </div>
@@ -35,6 +35,11 @@
             </p>
         </div>
 
+    </div>
+
+    <div class="credit">
+        Philadelphia city map artwork by artist 
+        <a href="http://society6.com/JazzberryBlue/Philadelphia-SjJ_Print#1=45">Jazzberry Blue</a>
     </div>
     </body>
 </html>

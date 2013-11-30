@@ -106,6 +106,8 @@ def get_nearby_locations(lon, lat, radius):
 
     for item in data:
         nearby_locations.append(item["location_id"])
+
+    print "nearby locations", nearby_locations
     
     closest_stop = model.access_check(nearby_locations)
     return closest_stop

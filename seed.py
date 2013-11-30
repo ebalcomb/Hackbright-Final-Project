@@ -64,13 +64,22 @@ def load_rails_stops():
 def load_subway_stops():
     f = open("subwayschedules/stops.csv")
     stops = f.readlines()
-    accessible_bus_stops = load_bus_stops()
     for stop in stops:
         stop = stop.split(",")
-        if int(stop[1]) not in accessible_bus_stops:
-            new_stop = model.Stops(id=int(stop[1]), stop_name=stop[2], stop_lat=0, stop_lon=0, stop_type = "subway")
-            model.session.add(new_stop)
+        new_stop = model.Stops(id=int(stop[1]), stop_name=stop[2], stop_lat=0, stop_lon=0, stop_type = "subway")
+        model.session.add(new_stop)
     model.session.commit()
+
+# def load_subway_stops():
+#     f = open("subwayschedules/stops.csv")
+#     stops = f.readlines()
+#     accessible_bus_stops = load_bus_stops()
+#     for stop in stops:
+#         stop = stop.split(",")
+#         if int(stop[1]) not in accessible_bus_stops:
+#             new_stop = model.Stops(id=int(stop[1]), stop_name=stop[2], stop_lat=0, stop_lon=0, stop_type = "subway")
+#             model.session.add(new_stop)
+#     model.session.commit()
 
 ##################################
 # ROUTES
@@ -198,7 +207,7 @@ def load_bus_paths():
 
 
 def load_intrapaths():
-    f = open("intrapaths.csv")
+    f = open("subwayrailspaths.csv")
     paths = f.readlines()
     for path in paths:
         path = path.split(",")
@@ -220,49 +229,48 @@ def load_shortest_routes():
     start_stops = model.get_stops()
     end_stops = model.get_stops()
 
-    # for start_stop in start_stops:
-    #     for end_stop in end_stops:
-    #         start = int(start_stop.id)
-    #         end = int(end_stop.id)
-    #         print "start", start
-    #         print "end", end
-
-    #         shortest_route = algorithm.find_route(start, end)
-    #         print "shortest route", shortest_route
-    #         if shortest_route:
-    #             route_string = str(shortest_route).strip('[]')
-    #             print "route string: ", route_string
-    #             new_shortest_route = model.ShortestRoute(start_stop=start_stop.id, end_stop=end_stop.id, stops_hit=route_string)
-    #             model.session.add(new_shortest_route)
-    # model.session.commit()
-
-    start = 90004
-    for end_stop in end_stops:
-        if int(end_stop.id)>90004:
+    for start_stop in start_stops:
+        for end_stop in end_stops:
+            start = int(start_stop.id)
             end = int(end_stop.id)
-            print "start", start
-            print "end", end
+
             shortest_route = algorithm.find_route(start, end)
             print "shortest route", shortest_route
             if shortest_route:
                 route_string = str(shortest_route).strip('[]')
                 print "route string: ", route_string
-                new_shortest_route = model.ShortestRoute(start_stop=start, end_stop=end, stops_hit=route_string)
+                new_shortest_route = model.ShortestRoute(start_stop=start_stop.id, end_stop=end_stop.id, stops_hit=route_string)
                 model.session.add(new_shortest_route)
-    model.session.commit()
+        model.session.commit()
+    print "*****************************\nCOMMITTED!"
+
+    # start = 90004
+    # for end_stop in end_stops:
+    #     if int(end_stop.id)>90004:
+    #         end = int(end_stop.id)
+    #         print "start", start
+    #         print "end", end
+    #         shortest_route = algorithm.find_route(start, end)
+    #         print "shortest route", shortest_route
+    #         if shortest_route:
+    #             route_string = str(shortest_route).strip('[]')
+    #             print "route string: ", route_string
+    #             new_shortest_route = model.ShortestRoute(start_stop=start, end_stop=end, stops_hit=route_string)
+    #             model.session.add(new_shortest_route)
+    # model.session.commit()
 
 
 def main():
     load_rails_stops()
     load_subway_stops()
-    load_bus_routes()
+    #load_bus_routes()
     load_rails_routes()
     load_subway_routes()
-    load_bus_trips()
+    #load_bus_trips()
     load_rails_trips()
-    load_bus_stop_times()
+    #load_bus_stop_times()
     load_rails_stop_times()
     load_intrapaths()
-    load_shortest_routes()
+    #load_shortest_routes()
 
 

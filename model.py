@@ -8,7 +8,6 @@ from sqlalchemy import Column, Integer, String, DateTime, Text, Float
 
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 
-#from flask.ext.login import UserMixin
 
 
 engine = create_engine("sqlite:///septa.db", echo=True)
@@ -67,6 +66,8 @@ class Trips(Base):
     trip_id = Column(Integer, ForeignKey('trips.id'), nullable=False)
     direction_id = Column(Integer, nullable=False)
 
+
+
 class ShortestRoute(Base):
     __tablename__ = "shortest_routes"
     id = Column(Integer, primary_key=True)
@@ -86,14 +87,25 @@ def create_tables():
 ##########################################
 
 #check the accessbility of stops found within the radius around the starting lat/long. If a stop is accessible, return that stops details. If it gets through the whole list and no stops are accessible, return False. 
+
+
 def access_check(stop_list):
         for stop in stop_list:
             stop = int(stop)
-            stop_access = session.query(Paths).filter_by(start_stop=stop).all()
+            stop_access = session.query(Stops).filter_by(id=stop).all()
             if stop_access:
                 print "WINNER: ", stop
                 return stop
         return False
+
+# def access_check(stop_list):
+#         for stop in stop_list:
+#             stop = int(stop)
+#             stop_access = session.query(Paths).filter_by(start_stop=stop).all()
+#             if stop_access:
+#                 print "WINNER: ", stop
+#                 return stop
+#         return False
 
 ##########################################
 
@@ -104,6 +116,12 @@ def get_paths():
 def get_stops():
     stops = session.query(Stops).all()
     return stops
+
+def get_stop(stop_id):
+    stop = session.query(Stops).filter_by(id=int(stop_id)).all()
+    return stop[0]
+
+
 
 def get_shortest_route(start_stop, end_stop):
     shortest_route = session.query(ShortestRoute).filter_by(start_stop=start_stop, end_stop=end_stop).all()
@@ -118,7 +136,7 @@ def get_shortest_route(start_stop, end_stop):
         return ", ".join(stop_names)
 
     else:
-        return "It ran at least."
+        return False
         
 
 

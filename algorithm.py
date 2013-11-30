@@ -126,7 +126,17 @@ def shortest_route(graph, initial_stop, goal_stop):
 
 def find_route(initial_stop, goal_stop):
     route = shortest_route(my_map, initial_stop, goal_stop)
-    return route
+    if route:
+        directions = []
+        for stop in route:
+            stop_object = model.get_stop(stop)
+            stop_name = stop_object.stop_name
+            directions.append(stop_name)
+        directions_string = ", ".join(directions)
+
+        return directions_string
+    else:
+        return False
 
 
 def dijkstra(graph, initial_stop):
