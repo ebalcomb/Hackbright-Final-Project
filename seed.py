@@ -30,7 +30,7 @@ def get_time(minutes):
 accessible_bus_stops = []
 def load_bus_stops():
     #stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,zone_id,wheelchair_boarding
-    f = open("busschedules/stops.txt")
+    f = open("septa_data/busschedules/stops.txt")
     stops = f.readlines()
     for stop in stops:
         stop_col = stop.split(",")
@@ -44,13 +44,13 @@ def load_bus_stops():
 
 def load_rails_stops():
     #stop_id,stop_name, stop_desc, stop_lat, stop_lon, zone_id
-    g = open("railschedules/accessiblerailsstops")
+    g = open("septa_data/railschedules/accessiblerailsstops")
     stops = g.readlines()
     accessible_stop_ids = []
     for stop in stops:
         stop.strip()
         accessible_stop_ids.append(int(stop))
-    f = open("railschedules/stops.txt")
+    f = open("septa_data/railschedules/stops.txt")
     rail_stops = f.readlines()
     for stop in rail_stops:
         stop = stop.split(",")
@@ -62,7 +62,7 @@ def load_rails_stops():
 
 
 def load_subway_stops():
-    f = open("subwayschedules/stops.csv")
+    f = open("septa_data/subwayschedules/stops.csv")
     stops = f.readlines()
     for stop in stops:
         stop = stop.split(",")
@@ -87,7 +87,7 @@ def load_subway_stops():
 
 def load_bus_routes():
     #route_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url
-    f = open("busschedules/routes.txt")
+    f = open("septa_data/busschedules/routes.txt")
     routes = f.readlines()
     for route in routes:
         route_col = route.split(",")
@@ -98,7 +98,7 @@ def load_bus_routes():
 
 def load_rails_routes():
     #route_id,route_short_name,route_long_name,route_desc,agency_id,route_type,route_color,route_text_color,route_url
-    f = open("railschedules/routes.txt")
+    f = open("septa_data/railschedules/routes.txt")
     routes = f.readlines()
     for route in routes:
         route_col = route.split(",")
@@ -107,7 +107,7 @@ def load_rails_routes():
     model.session.commit()
 
 def load_subway_routes():
-    f = open("subwayschedules/routes.csv")
+    f = open("septa_data/subwayschedules/routes.csv")
     routes = f.readlines()
     for route in routes:
         route_col = route.split(",")
@@ -123,7 +123,7 @@ def load_subway_routes():
 
 def load_bus_trips():
     #route_id,service_id,trip_id,trip_headsign,block_id,direction_id,shape_id
-    f = open("busschedules/trips.txt")
+    f = open("septa_data/busschedules/trips.txt")
     covered_routes = []
     covered_trips = []
     trips = f.readlines()
@@ -140,7 +140,7 @@ def load_bus_trips():
 
 def load_rails_trips():
     #route_id,service_id,trip_id,trip_headsign,block_id,trip_short_name,shape_id,direction_id
-    f = open("railschedules/trips.txt")
+    f = open("septa_data/railschedules/trips.txt")
     covered_routes = []
     covered_trips = []
     trips = f.readlines()
@@ -161,7 +161,7 @@ def load_rails_trips():
 
 def load_bus_stop_times():
     #trip_id,arrival_time,departure_time,stop_id,stop_sequence
-    f = open("busschedules/stop_times.txt")
+    f = open("septa_data/busschedules/stop_times.txt")
     stop_times = f.readlines()
     for stop_time in stop_times:
         stop_time_col = stop_time.split(",")
@@ -172,7 +172,7 @@ def load_bus_stop_times():
 
 def load_rails_stop_times():
     #trip_id,arrival_time,departure_time,stop_id,stop_sequence,pickup_type,drop_off_type
-    f = open("railschedules/stop_times.txt")
+    f = open("septa_data/railschedules/stop_times.txt")
     stop_times = f.readlines()
     for stop_time in stop_times:
         stop_time_col = stop_time.split(",")
@@ -188,7 +188,7 @@ def load_rails_stop_times():
 ##################################
 
 def load_bus_paths():
-    f = open("busschedules/interesting_times.txt")
+    f = open("septa_data/busschedules/interesting_times.txt")
     stop_times = f.readlines()
     for i in range(len(stop_times)-1):
         stop_col1 = stop_times[i].split(",")
@@ -207,7 +207,7 @@ def load_bus_paths():
 
 
 def load_intrapaths():
-    f = open("subwayrailspaths.csv")
+    f = open("septa_data/subwayrailspaths.csv")
     paths = f.readlines()
     for path in paths:
         path = path.split(",")
@@ -217,7 +217,7 @@ def load_intrapaths():
 
 
 def load_interpaths():
-    f = open("interpaths.csv")
+    f = open("septa_data/interpaths.csv")
     paths = f.readlines()
     for path in paths:
         path = path.split(",")

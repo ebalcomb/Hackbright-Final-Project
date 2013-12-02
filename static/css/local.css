@@ -3,16 +3,10 @@
 .page-header{background-color:#e7dbaa;}
 .row{background-color:#e7dbaa;}
 #master{font-size: 100;}
-/*#landing-row{width:600px;}*/
 img {width:100%}
 body{background-image:url("phillymap.jpg"); background-size: 100%}
 .form-horizontal{background-color:#e7dbaa;}
 .spinner{height:25px; width:200px;margin-left: 160px;}
 .credit{position:fixed; background:#e7dbaa; bottom:0; right:0; padding:10px; font-size:14;}
+.bootstrap{position:absolute; color:#FFFFFF;top:0; right:0; padding:10px; font-size:18;}
 .navbar{font-size:18;}
-
-
-/*#backgroundbox{background-color:#E05151;}*/
-/*#backgroundblue{background-image:url("IMG_2628.jpg");}
-#subbox{background-color:#E05151;}
-/*#fontz{font-color:#F0F0F0;}*/
