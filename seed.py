@@ -60,7 +60,7 @@ def load_rails_stops():
         stop = stop.split(",")
         stop_id = stop[0].strip()
         if int(stop_id) in accessible_stop_ids:
-            new_stop = model.Stops(id=stop[0], stop_name=stop[1], stop_lat=stop[3], stop_lon=stop[4], stop_type = "rail")
+            new_stop = model.Stops(id=stop[0], stop_name=stop[1], stop_lat=stop[3], stop_lon=stop[4], stop_type = "rail", line_name="Regional Rail")
             model.session.add(new_stop)
     model.session.commit()
 
@@ -70,7 +70,7 @@ def load_subway_stops():
     stops = f.readlines()
     for stop in stops:
         stop = stop.split(",")
-        new_stop = model.Stops(id=int(stop[1]), stop_name=stop[2], stop_lat=0, stop_lon=0, stop_type = "subway")
+        new_stop = model.Stops(id=int(stop[1]), stop_name=stop[2], stop_lat=0, stop_lon=0, stop_type = "subway", line_name=stop[3])
         model.session.add(new_stop)
     model.session.commit()
 
@@ -251,4 +251,5 @@ def main():
     load_rails_trips()
     load_rails_stop_times()
     load_intrapaths()
+    load_interpaths()
  

@@ -47,7 +47,8 @@ def process_route():
     endlng = float(latlngs["endlng"])
     start_stop = int(septa.get_nearby_locations(startlng, startlat, 5))
     end_stop = int(septa.get_nearby_locations(endlng, endlat, 5))
-
+    print "**************", start_stop
+    print "**************", end_stop
     if start_stop:
         if end_stop:
             if start_stop != end_stop:

@@ -190,11 +190,44 @@ def shortest_route(graph, initial_stop, goal_stop):
 def find_route(initial_stop, goal_stop):
     route = shortest_route(my_map, initial_stop, goal_stop)
     if route:
+        print "***********************"
+        print route
+        print "***********************"
         directions = []
+        first_stop = model.get_stop(route[0])
+        first_stop_name = first_stop.stop_name
+        first_stop_line = first_stop.line_name
+        starting_direction = "START AT: %s stop on the %s line" %(first_stop_name, first_stop_line)
+        directions.append(starting_direction)
+        directions.append(" ")
+        directions.append(" ")
+        directions.append(" ")
+        current_line = first_stop.line_name.strip()
+
         for stop in route:
             stop_object = model.get_stop(stop)
             stop_name = stop_object.stop_name
-            directions.append(stop_name)
+            stop_line = stop_object.line_name.strip()
+            name_and_line = stop_name + "(" + stop_line + ")"
+            if stop_line != current_line:
+                #transfer_direction = "TRANSFER TO: " + stop_name + "on the ", stop_line
+                transfer_direction = "TRANSFER TO: %s stop on the %s line" %(stop_name, stop_line)
+                directions.append(" ")
+                directions.append(" ")
+                directions.append(transfer_direction)
+                directions.append(" ")
+                directions.append(" ")
+                current_line = stop_line
+            directions.append(name_and_line)
+
+        end_stop = model.get_stop(route[-1])
+        end_stop_name = end_stop.stop_name
+        end_stop_line = end_stop.line_name
+        ending_direction = "END AT: %s stop on the %s line" %(end_stop_name, end_stop_line)
+        directions.append(" ")
+        directions.append(" ")
+        directions.append(ending_direction)
+        directions.append(" ")
         directions_string = ", ".join(directions)
 
         return directions_string

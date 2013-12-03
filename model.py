@@ -42,6 +42,7 @@ class Stops(Base):
     stop_lat = Column(Float, nullable=True)
     stop_lon = Column(Float, nullable=True)
     stop_type = Column(String(64), nullable=False)
+    line_name = Column(String(64), nullable=False)
     
     # stop_times = relationship("StopTimes", backref=backref("stop", order_by=id))
     # trips = relationship("Trips", backref=backref("stops", order_by=id))
@@ -115,7 +116,9 @@ def get_shortest_route(start_stop, end_stop):
         for stop in route_string:
             stop_object = session.query(Stops).filter_by(id=int(stop)).all()
             stop_name = stop_object[0].stop_name
-            stop_names.append(stop_name)
+            stop_line = stop_object[0].line_name
+            name_line_string = stop_name + "(" + stop_line + ")"
+            stop_names.append(name_line_string)
         return ", ".join(stop_names)
 
     else:
