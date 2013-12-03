@@ -1,7 +1,10 @@
 import model
-import csv
-import sys
 import algorithm
+
+
+############################################################
+#TIME CONVERSION
+
 
 
 ###CONVERT TIMES (12:00:00) INTO MINUTES OF THE DAY
@@ -23,9 +26,10 @@ def get_time(minutes):
 
 
 
-##################################
-# STOPS
-##################################
+
+
+############################################################
+#STOPS
 
 accessible_bus_stops = []
 def load_bus_stops():
@@ -70,20 +74,12 @@ def load_subway_stops():
         model.session.add(new_stop)
     model.session.commit()
 
-# def load_subway_stops():
-#     f = open("subwayschedules/stops.csv")
-#     stops = f.readlines()
-#     accessible_bus_stops = load_bus_stops()
-#     for stop in stops:
-#         stop = stop.split(",")
-#         if int(stop[1]) not in accessible_bus_stops:
-#             new_stop = model.Stops(id=int(stop[1]), stop_name=stop[2], stop_lat=0, stop_lon=0, stop_type = "subway")
-#             model.session.add(new_stop)
-#     model.session.commit()
 
-##################################
-# ROUTES
-##################################
+
+
+
+############################################################
+#ROUTES
 
 def load_bus_routes():
     #route_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url
@@ -117,9 +113,11 @@ def load_subway_routes():
 
 
 
-##################################
-# TRIPS
-##################################
+
+
+############################################################
+#TRIPS
+
 
 def load_bus_trips():
     #route_id,service_id,trip_id,trip_headsign,block_id,direction_id,shape_id
@@ -155,9 +153,10 @@ def load_rails_trips():
 
 
 
-##################################
-# STOP TIMES
-##################################
+
+
+############################################################
+#STOP TIMES
 
 def load_bus_stop_times():
     #trip_id,arrival_time,departure_time,stop_id,stop_sequence
@@ -165,7 +164,6 @@ def load_bus_stop_times():
     stop_times = f.readlines()
     for stop_time in stop_times:
         stop_time_col = stop_time.split(",")
-        arrival_time = get_minutes(stop_time_col[1])
         new_stop_time = model.StopTimes(trip_id=stop_time_col[0], arrival_time=stop_time_col[1], stop_id=stop_time_col[3])
         model.session.add(new_stop_time)
     model.session.commit()
@@ -176,16 +174,15 @@ def load_rails_stop_times():
     stop_times = f.readlines()
     for stop_time in stop_times:
         stop_time_col = stop_time.split(",")
-        arrival_time = get_minutes(stop_time_col[1])
         new_stop_time = model.StopTimes(trip_id=stop_time_col[0], arrival_time=stop_time_col[1], stop_id=stop_time_col[3])
         model.session.add(new_stop_time)
     model.session.commit()
 
 
 
-##################################
-# PATHS
-##################################
+
+############################################################
+#PATHS
 
 def load_bus_paths():
     f = open("septa_data/busschedules/interesting_times.txt")
@@ -196,11 +193,6 @@ def load_bus_paths():
         if stop_col1[0] == stop_col2[0]:
             start_stop = stop_col1[3]
             end_stop = stop_col2[3]
-            #start_time = stop_times[i+1][1]
-            #end_time = stop_times[i][1]
-            #print "START TIME: ", start_time
-            #print "END TIME: ", end_time
-            #cost = get_minutes(stop_times[i+1][1]) - get_minutes(stop_times[i][1])
             new_path = model.Paths(start_stop=int(start_stop), end_stop=int(end_stop), cost=5)
             model.session.add(new_path)
     model.session.commit()
@@ -225,6 +217,7 @@ def load_interpaths():
         model.session.add(new_path)
     model.session.commit()
 
+
 def load_shortest_routes():
     start_stops = model.get_stops()
     end_stops = model.get_stops()
@@ -242,35 +235,20 @@ def load_shortest_routes():
                 new_shortest_route = model.ShortestRoute(start_stop=start_stop.id, end_stop=end_stop.id, stops_hit=route_string)
                 model.session.add(new_shortest_route)
         model.session.commit()
-    print "*****************************\nCOMMITTED!"
 
-    # start = 90004
-    # for end_stop in end_stops:
-    #     if int(end_stop.id)>90004:
-    #         end = int(end_stop.id)
-    #         print "start", start
-    #         print "end", end
-    #         shortest_route = algorithm.find_route(start, end)
-    #         print "shortest route", shortest_route
-    #         if shortest_route:
-    #             route_string = str(shortest_route).strip('[]')
-    #             print "route string: ", route_string
-    #             new_shortest_route = model.ShortestRoute(start_stop=start, end_stop=end, stops_hit=route_string)
-    #             model.session.add(new_shortest_route)
-    # model.session.commit()
+
+
+
+############################################################
+#RAILS AND SUBWAY INFO
 
 
 def main():
     load_rails_stops()
     load_subway_stops()
-    #load_bus_routes()
     load_rails_routes()
     load_subway_routes()
-    #load_bus_trips()
     load_rails_trips()
-    #load_bus_stop_times()
     load_rails_stop_times()
     load_intrapaths()
-    #load_shortest_routes()
-
-
+ 

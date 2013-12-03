@@ -1,10 +1,6 @@
-import config
-import bcrypt
-from datetime import datetime
-
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, ForeignKey
-from sqlalchemy import Column, Integer, String, DateTime, Text, Float
+from sqlalchemy import Column, Integer, String, Float
 
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 
@@ -19,8 +15,9 @@ Base = declarative_base()
 Base.query = session.query_property()
 
 
-###############################################
 
+############################################################
+#CLASSES
 
 class Paths(Base):
     __tablename__ = "paths"
@@ -45,9 +42,10 @@ class Stops(Base):
     stop_lat = Column(Float, nullable=True)
     stop_lon = Column(Float, nullable=True)
     stop_type = Column(String(64), nullable=False)
-    #stop_times = relationship("StopTimes", backref=backref("stop", order_by=id))
-    #trips = relationship("Trips", backref=backref("stops", order_by=id))
-    #paths = relationship("Paths", backref=backfref("stops", order_by=id))
+    
+    # stop_times = relationship("StopTimes", backref=backref("stop", order_by=id))
+    # trips = relationship("Trips", backref=backref("stops", order_by=id))
+    # paths = relationship("Paths", backref=backref("stops", order_by=id))
 
 class StopTimes(Base):
     __tablename__ = "stop_times"
@@ -56,7 +54,7 @@ class StopTimes(Base):
     arrival_time = Column(String(64), nullable=False)
     stop_id = Column(Integer, ForeignKey('stops.id'), nullable=False)
 
-    #stop = relationship("Stops", backref=backref("stop_times", order_by=id))
+    # stop = relationship("Stops", backref=backref("stop_times", order_by=id))
 
 
 class Trips(Base):
@@ -78,49 +76,34 @@ class ShortestRoute(Base):
 
 
 
-##########################################
-
-def create_tables():
-    Base.metadata.create_all(engine)
-
-
-##########################################
-
+############################################################
+#FUNCTIONS
 #check the accessbility of stops found within the radius around the starting lat/long. If a stop is accessible, return that stops details. If it gets through the whole list and no stops are accessible, return False. 
 
 
 def access_check(stop_list):
-        for stop in stop_list:
-            stop = int(stop)
-            stop_access = session.query(Stops).filter_by(id=stop).all()
-            if stop_access:
-                print "WINNER: ", stop
-                return stop
-        return False
+    for stop in stop_list:
+        stop = int(stop)
+        stop_access = session.query(Stops).filter_by(id=stop).all()
+        if stop_access:
+            print "WINNER: ", stop
+            return stop
+    return False
 
-# def access_check(stop_list):
-#         for stop in stop_list:
-#             stop = int(stop)
-#             stop_access = session.query(Paths).filter_by(start_stop=stop).all()
-#             if stop_access:
-#                 print "WINNER: ", stop
-#                 return stop
-#         return False
-
-##########################################
 
 def get_paths():
     paths = session.query(Paths).all()
     return paths
 
+
 def get_stops():
     stops = session.query(Stops).all()
     return stops
 
+
 def get_stop(stop_id):
     stop = session.query(Stops).filter_by(id=int(stop_id)).all()
     return stop[0]
-
 
 
 def get_shortest_route(start_stop, end_stop):
@@ -143,9 +126,11 @@ def get_shortest_route(start_stop, end_stop):
 
 
 ##########################################
+#CREATE
 
 
+def create_tables():
+    Base.metadata.create_all(engine)
 
 if __name__ == "__main__":
-    # create_tables()
-    pass
+    create_tables()

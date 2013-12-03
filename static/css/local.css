@@ -10,3 +10,4 @@ body{background-image:url("phillymap.jpg"); background-size: 100%}
 .credit{position:fixed; background:#e7dbaa; bottom:0; right:0; padding:10px; font-size:14;}
 .bootstrap{position:absolute; color:#FFFFFF;top:0; right:0; padding:10px; font-size:18;}
 .navbar{font-size:18;}
+#Results{font-size:18; margin-left: 100px;}

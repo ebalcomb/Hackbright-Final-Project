@@ -3,34 +3,42 @@
 {% block body %}
 
 <div class="hero-unit" id="routing-hero">
-   <div class="form-horizontal">
-    <!--action="{{url_for("process_route") }}" method="POST"-->
-          <h1>Find my route!</h1>
-      <br><br>
-  	<div class="control-group">
-    <label class="control-label" for="start">I'm starting at:</label>
-    <div class="controls">
-      <input type="text" id="start-address" name="start">
+  <div class="form-horizontal">
+    <h1>Find my route!</h1><br>
+    <br>
+
+    <div class="control-group">
+        <label class="control-label" for="start">I'm starting
+        at:</label>
+
+        <div class="controls">
+            <input id="start-address" name="start" type="text">
+        </div>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label" for="end">I'm going to:</label>
-    <div class="controls">
-      <input type="text" id="end-address" name="end">
+
+    <div class="control-group">
+        <label class="control-label" for="end">I'm going to:</label>
+
+        <div class="controls">
+            <input id="end-address" name="end" type="text">
+        </div>
     </div>
-  </div>
-  <div class="control-group">
-    <div class="controls">
-      <button class="btn btn-primary" value = "Find accessible" id="routeButton"><i class="icon-search icon-white" ></i> Find Accessible Route</button>
+
+    <div class="control-group">
+        <div class="controls">
+            <button class="btn btn-primary" id="routeButton" value=
+            "Find accessible">Find Accessible Route</button>
+        </div>
+    </div><br>
+
+    <img class="spinner" id="spinner" name="spinner" src=
+    "static/css/30.GIF" style="display:none">
+    <div id="Results">
     </div>
-  </div>
-  <br>
-        <img src="static/css/30.GIF" style="display:none" class= "spinner" id="spinner">
-  <div id="Results">
-  </div>
-</div>
-</div>
-<!-- </div> -->
+
+
+</div><!--hero-unit-->
+
 <script>
 
   $(document).ready(function() {
@@ -71,10 +79,14 @@
   function saveCoords (locs) {
     if (locs["startlat"] && locs["endlat"]) {
       $.post("/process_route", locs, function(dataFromServer) {
+        var listFromServer = dataFromServer.split(",")
         $("#spinner").hide()
-        $("#Results").append(dataFromServer);
+        for (var i = 0; i < listFromServer.length; i++) {
+          $("#Results").append(listFromServer[i] + "<br>");
+        };
       })
     }
   }
 </script>
+
 {% endblock %}

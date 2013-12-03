@@ -1,6 +1,24 @@
-#Goal: use Dijkstra's algorthim to find shortest leg between 2 stops
 import model
 
+
+
+############################################################
+#CLASSES
+
+
+class Stop:
+    def __init__(self, stop_id):
+        self.id = stop_id
+        self.paths = []
+
+
+class Path:
+    def __init__(self, start, end, distance):
+        self.start_stop = start
+        self.end_stop = end
+        self.distance = distance
+
+#Map object: dictionary of stop objects, list of path objects
 class Map(object):
     def __init__(self, stops, paths):
         self.stops = stops
@@ -18,19 +36,13 @@ class Map(object):
         self.paths.add(new_return_path)
 
 
-class Stop:
-    def __init__(self, stop_id):
-        self.id = stop_id
-        self.paths = []
+
+############################################################
+#MAP CREATION
 
 
-class Path:
-    def __init__(self, start, end, distance):
-        self.start_stop = start
-        self.end_stop = end
-        self.distance = distance
 
-
+#Query database and create map from the paths table
 def create_map_from_DB():
     db_paths = model.get_paths()
     stops = {}
@@ -65,6 +77,7 @@ def create_map_from_DB():
     return new_map
 
 
+#Create map from CSV
 def create_map(csv):
     f = open(csv)
     r = f.readlines()
@@ -77,7 +90,6 @@ def create_map(csv):
             item = int(item)
             final_row.append(item)
         rows.append(final_row)
-
 
     stops = {}
     paths = []
@@ -110,35 +122,16 @@ def create_map(csv):
 
 my_map = create_map_from_DB()
 
-def shortest_route(graph, initial_stop, goal_stop):
-    distances, routes = dijkstra(graph, initial_stop)
-    route = [goal_stop]
- 
-    while goal_stop != initial_stop:
-        if routes.get(goal_stop, False):
-            route.append(routes[goal_stop])
-            goal_stop = routes[goal_stop]
-        else:
-            return False
- 
-    route.reverse()
-    return route 
-
-def find_route(initial_stop, goal_stop):
-    route = shortest_route(my_map, initial_stop, goal_stop)
-    if route:
-        directions = []
-        for stop in route:
-            stop_object = model.get_stop(stop)
-            stop_name = stop_object.stop_name
-            directions.append(stop_name)
-        directions_string = ", ".join(directions)
-
-        return directions_string
-    else:
-        return False
 
 
+
+############################################################
+#DIJKSTRAS
+
+
+
+
+#Find shortest routes from initial stop to all other stops
 def dijkstra(graph, initial_stop):
     visited = {initial_stop: 0}
 
@@ -176,10 +169,46 @@ def dijkstra(graph, initial_stop):
 
 
 
+#Find shortest route between two specific stops
+def shortest_route(graph, initial_stop, goal_stop):
+    distances, routes = dijkstra(graph, initial_stop)
+    route = [goal_stop]
+ 
+    while goal_stop != initial_stop:
+        if routes.get(goal_stop, False):
+            route.append(routes[goal_stop])
+            goal_stop = routes[goal_stop]
+        else:
+            return False
+ 
+    route.reverse()
+    return route 
 
+
+
+#take shortest route and return string of stop names
+def find_route(initial_stop, goal_stop):
+    route = shortest_route(my_map, initial_stop, goal_stop)
+    if route:
+        directions = []
+        for stop in route:
+            stop_object = model.get_stop(stop)
+            stop_name = stop_object.stop_name
+            directions.append(stop_name)
+        directions_string = ", ".join(directions)
+
+        return directions_string
+    else:
+        return False
+
+
+
+
+############################################################
 #TESTING
 
-sample_map = create_map("sample.csv")
+
+#sample_map = create_map("sample.csv")
 
 def test_integrity():
     assert shortest_route(sample_map, 1, 5) == [1, 3, 2, 5]
