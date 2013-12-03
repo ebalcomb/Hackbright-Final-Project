@@ -2,20 +2,47 @@
 
 {% block body %}
 <div class="hero-unit">
-	<h1>Feedback</h1><br>
+	<h1>Contact Me!</h1><br>
+
+	<p>
+		<a href="https://github.com/ebalcomb"><i class="fa fa-github fa-md"></i> Github</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+		<a href="http://www.linkedin.com/in/ellibalcomb"><i class="fa fa-linkedin fa-md"></i> LinkedIn</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+		<a href="https://www.facebook.com/ElliBalcomb"><i class="fa fa-facebook fa-md"></i> Facebook</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+		<a href="https://twitter.com/ebalcomb"><i class="fa fa-twitter fa-md"></i> Twitter</a>
+	</p>
+
 
 	<form class="feedback" action="{{url_for("process_feedback")}}" method="POST">
 		<label>Name</label>
-		<input type="text" class="span4" name="name">
+		<input type="text" class="span6" name="name">
 		<label>Company/Organization</label>
-		<input type="text" class="span4" name="company">
+		<input type="text" class="span6" name="company">
 		<label>Email Address</label>
-		<input type="text" class="span4" name="email">
+		<input type="text" class="span6" name="email">
 		</label>
 		<label>Message</label>
 		<textarea name="message" id="message" class="input-xlarge span6" rows="10" name="message"></textarea>
-		<button type="submit" class="btn btn-primary">Send</button>
+		<br>
+		<button type="submit" class="btn btn-primary" id="send">Send</button>
 	</form>
+
+
+
 	
 </div><!-- .hero-unit -->
 

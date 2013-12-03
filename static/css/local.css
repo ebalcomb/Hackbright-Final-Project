@@ -1,5 +1,5 @@
 .hero-unit{background-color:#e7dbaa; margin-bottom:80px; margin-top:75px;}
-#landing-hero{text-align:center; padding:30px;}
+#landing-hero{text-align:center; padding:50px;}
 .page-header{background-color:#e7dbaa;}
 .row{background-color:#e7dbaa;}
 #master{font-size: 100;}
@@ -11,3 +11,9 @@ body{background-image:url("phillymap.jpg"); background-size: 100%}
 .bootstrap{position:absolute; color:#FFFFFF;top:0; right:0; padding:10px; font-size:22;margin-top:5px;}
 .navbar .container{font-size:22; height: 45px; padding:5px;}
 #Results{font-size:18;}
+#send{padding-left:20px; padding-right:20px; padding-top:10px; padding-bottom:10px; font-size: 18; margin-top: 10px;}
+#start-address{height:30px; width:550px;font-size: 18;}
+#end-address{height:30px; width:550px;font-size: 18;}
+#routeButton{padding-left:20px; padding-right:20px; padding-top:10px; padding-bottom:10px; font-size: 18; margin-top: 10px;}
+.control-label{font-size: 18;}
+#landing-row{padding: 10px; font-size: 12;}
