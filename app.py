@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, request, session, url_for
 import septa
 import algorithm
+import smtplib
 
 
 app = Flask(__name__)
@@ -35,6 +36,23 @@ def profile():
 @app.route("/getinvolved")
 def involved():
     return render_template("involved.html")
+
+@app.route("/process_feedback", methods=["POST"])
+def process_feedback():
+    name = request.form.get("name")
+    email = request.form.get("email")
+    company = request.form.get("company")
+    message = request.form.get("message")
+
+    sender = email
+    receivers = ['ebalcomb@gmail.com']
+
+
+    # smtpObj = smtplib.SMTP('localhost')
+    # smtpObj.sendmail(sender, receivers, message)         
+
+
+    return render_template("thanks.html", name=name, email=email, company=company, message=message)
 
 
 

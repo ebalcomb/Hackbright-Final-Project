@@ -194,12 +194,13 @@ def find_route(initial_stop, goal_stop):
         print route
         print "***********************"
         directions = []
+
         first_stop = model.get_stop(route[0])
         first_stop_name = first_stop.stop_name
         first_stop_line = first_stop.line_name
         starting_direction = "START AT: %s stop on the %s line" %(first_stop_name, first_stop_line)
-        directions.append(starting_direction)
         directions.append(" ")
+        directions.append(starting_direction)
         directions.append(" ")
         directions.append(" ")
         current_line = first_stop.line_name.strip()
