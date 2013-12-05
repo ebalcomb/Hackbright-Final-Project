@@ -15,5 +15,7 @@ body{background-image:url("phillymap.jpg"); background-size: 100%}
 #start-address{height:30px; width:550px;font-size: 18;}
 #end-address{height:30px; width:550px;font-size: 18;}
 #routeButton{padding-left:20px; padding-right:20px; padding-top:10px; padding-bottom:10px; font-size: 18; margin-top: 10px;}
-.control-label{font-size: 18;}
+.control-label{font-size: 20;}
 #landing-row{padding: 10px; font-size: 12;}
+.span6{padding-bottom:15px;padding-top:5px;font-size: 18;}
+.message{font-size: 20;}
